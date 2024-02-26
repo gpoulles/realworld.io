@@ -2,9 +2,7 @@
   <div class="article-preview">
     <div class="article-meta">
       <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
-      <button class="btn btn-outline-primary btn-sm pull-xs-right">
-        <i class="ion-heart"></i> 29
-      </button>
+      <conduit-favorites [favorites]="article.favorites"></conduit-favorites>
     </div>
     <a [routerLink]="['/article', article.slug]" class="preview-link">
       <h1>{{article.title}}</h1>
