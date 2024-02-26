@@ -15,12 +15,14 @@ import { environment } from '../../../environments/environment';
 export class ArticlesService {
   constructor(private http: HttpClient) {}
 
+  endpoint = environment.endpointDomain + 'articles';
+
   getArticles(offset = 0): Observable<Articles> {
     const params = new HttpParams()
       .append('limit', ARTICLES_PER_PAGE.toString())
       .append('offset', offset.toString());
     return this.http
-      .get<ArticlesApiResponse>(environment.endpointDomain + 'articles', {
+      .get<ArticlesApiResponse>(this.endpoint, {
         params,
       })
       .pipe(
@@ -31,13 +33,11 @@ export class ArticlesService {
   }
 
   getArticle(slug: string): Observable<Article> {
-    return this.http
-      .get<ArticleApiResponse>(environment.endpointDomain + 'articles/' + slug)
-      .pipe(
-        map((response: ArticleApiResponse) => {
-          return this.mapArticleResponse(response.article);
-        })
-      );
+    return this.http.get<ArticleApiResponse>(this.endpoint + '/' + slug).pipe(
+      map((response: ArticleApiResponse) => {
+        return this.mapArticleResponse(response.article);
+      })
+    );
   }
 
   private mapArticlesResponse(response: ArticlesApiResponse): Articles {
