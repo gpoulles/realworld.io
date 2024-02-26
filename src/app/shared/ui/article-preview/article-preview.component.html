@@ -10,10 +10,7 @@
       <h1>{{article.title}}</h1>
       <p>{{article.excerpt}}</p>
       <span>Read more...</span>
-      <ul class="tag-list">
-        <li class="tag-default tag-pill tag-outline">realworld</li>
-        <li class="tag-default tag-pill tag-outline">implementations</li>
-      </ul>
+      <conduit-tags [tags]="article.tags"></conduit-tags>
     </a>
   </div>
 }
