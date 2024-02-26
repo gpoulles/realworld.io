@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ArticlesService} from "../../shared/services/articles.service";
 
 @Component({
   selector: 'conduit-home',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
 
+  constructor(private readonly articlesService:ArticlesService) {
+  }
+
+  ngOnInit(){
+    this.articlesService.getArticles().subscribe({next: response => console.log(response), error: error => console.log(error)});
+  }
 }
