@@ -7,6 +7,7 @@ export interface ArticleApiResponse {
   article: ArticleApiResponse;
 }
 export interface ArticleApiResponse {
+  author: AuthorApiResponse;
   slug: 'string';
   title: 'string';
   description: 'string';
@@ -16,10 +17,11 @@ export interface ArticleApiResponse {
   updatedAt: '2024-02-24T13:31:46.917Z';
   favorited: true;
   favoritesCount: 0;
-  author: {
-    username: 'string';
-    bio: 'string';
-    image: 'string';
-    following: true;
-  };
+}
+
+interface AuthorApiResponse {
+  username: 'string';
+  bio: 'string';
+  image: 'string';
+  following: true;
 }
