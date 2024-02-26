@@ -1,11 +1,7 @@
 @if(article){
   <div class="article-preview">
     <div class="article-meta">
-      <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-      <div class="info">
-        <a href="/profile/eric-simons" class="author">Eric Simons</a>
-        <span class="date">January 20th</span>
-      </div>
+      <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
       <button class="btn btn-outline-primary btn-sm pull-xs-right">
         <i class="ion-heart"></i> 29
       </button>

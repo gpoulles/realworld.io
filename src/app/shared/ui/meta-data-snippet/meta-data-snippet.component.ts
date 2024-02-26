@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Author } from '../../interfaces/article.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'conduit-meta-data-snippet',
   standalone: true,
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './meta-data-snippet.component.html',
   styleUrl: './meta-data-snippet.component.scss',
 })

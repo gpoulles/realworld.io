@@ -1,1 +1,8 @@
-<p>meta-data-snippet works!</p>
+@if (author){
+  <a><img [src]="author.picture" /></a>
+  <div class="info">
+    <a class="author">{{author.name}}</a>
+    <span class="date">{{publicationDate | date}}</span>
+  </div>
+}
+
