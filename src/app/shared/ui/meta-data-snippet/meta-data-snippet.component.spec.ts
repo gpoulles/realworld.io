@@ -8,10 +8,9 @@ describe('MetaDataSnippetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MetaDataSnippetComponent]
-    })
-    .compileComponents();
-    
+      imports: [MetaDataSnippetComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MetaDataSnippetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
