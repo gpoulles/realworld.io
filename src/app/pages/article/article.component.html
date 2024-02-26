@@ -8,14 +8,7 @@
 
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
-
-
-          &nbsp;&nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post <span class="counter">(29)</span>
-          </button>
-
+          <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
         </div>
       </div>
     </div>
@@ -36,14 +29,7 @@
       <div class="article-actions">
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
-
-
-          &nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Article <span class="counter">(29)</span>
-          </button>
-
+          <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
         </div>
       </div>
     </div>

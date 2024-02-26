@@ -5,11 +5,12 @@ import { MetaDataSnippetComponent } from '../../shared/ui/meta-data-snippet/meta
 import { Article } from '../../shared/interfaces/article.interface';
 import { tap } from 'rxjs';
 import { TagsComponent } from '../../shared/ui/tags/tags.component';
+import { FavoritesComponent } from '../../shared/ui/favorites/favorites.component';
 
 @Component({
   selector: 'conduit-article',
   standalone: true,
-  imports: [MetaDataSnippetComponent, TagsComponent],
+  imports: [MetaDataSnippetComponent, TagsComponent, FavoritesComponent],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',
 })
