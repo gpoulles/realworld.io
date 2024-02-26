@@ -12,9 +12,7 @@
         @if (loadingArticles){
           Loading articles...
         } @else {
-          @for (article of articlesResponse.articles; track article.slug){
-            <conduit-article-preview [article]="article"></conduit-article-preview>
-          }
+          <conduit-article-list [articles]="articlesResponse.articles"></conduit-article-list>
           <conduit-pagination [currentPage]="getCurrentPage()" [totalPages]="getTotalPages()" (pageSelected)="switchPage($event)"></conduit-pagination>
         }
       </div>

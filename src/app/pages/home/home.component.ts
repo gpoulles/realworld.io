@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ArticlesService } from '../../shared/services/articles.service';
-import { Article, Articles } from '../../shared/interfaces/article.interface';
 import { ArticlePreviewComponent } from '../../shared/ui/article-preview/article-preview.component';
 import { PaginationComponent } from '../../shared/ui/pagination/pagination.component';
 import { ARTICLES_PER_PAGE } from '../../shared/constants/api.constant';
 import { tap } from 'rxjs';
+import { ArticleListComponent } from '../../shared/ui/article-list/article-list.component';
+import { Articles } from '../../shared/interfaces/article.interface';
 
 @Component({
   selector: 'conduit-home',
   standalone: true,
-  imports: [ArticlePreviewComponent, PaginationComponent],
+  imports: [ArticlePreviewComponent, PaginationComponent, ArticleListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   loadingArticles = false;
-
-  articles: Article[] = [];
   articlesResponse: Articles = { articles: [], articlesCount: 0 };
   offset: number = 0;
 
