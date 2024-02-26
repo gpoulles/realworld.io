@@ -9,22 +9,14 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
-        @for (article of articles; track article.slug){
-          <conduit-article-preview [article]="article"></conduit-article-preview>
+        @if (loadingArticles){
+          Loading articles...
+        } @else {
+          @for (article of articlesResponse.articles; track article.slug){
+            <conduit-article-preview [article]="article"></conduit-article-preview>
+          }
+          <conduit-pagination [currentPage]="getCurrentPage()" [totalPages]="getTotalPages()" (pageSelected)="switchPage($event)"></conduit-pagination>
         }
-
-
-
-
-
-        <ul class="pagination">
-          <li class="page-item active">
-            <a class="page-link" href="">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="">2</a>
-          </li>
-        </ul>
       </div>
 
       <div class="col-md-3">
