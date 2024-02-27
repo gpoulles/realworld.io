@@ -6,11 +6,17 @@ import { ARTICLES_PER_PAGE } from '../../shared/constants/api.constant';
 import { tap } from 'rxjs';
 import { ArticleListComponent } from '../../shared/ui/article-list/article-list.component';
 import { Articles } from '../../shared/interfaces/article.interface';
+import { PopularTagsComponent } from './popular-tags/popular-tags.component';
 
 @Component({
   selector: 'conduit-home',
   standalone: true,
-  imports: [ArticlePreviewComponent, PaginationComponent, ArticleListComponent],
+  imports: [
+    ArticlePreviewComponent,
+    PaginationComponent,
+    ArticleListComponent,
+    PopularTagsComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -28,6 +34,10 @@ export class HomeComponent implements OnInit {
   switchPage(page: number) {
     this.offset = (page - 1) * ARTICLES_PER_PAGE;
     this.loadArticles();
+  }
+
+  loadArticlesByTag(tag: string) {
+    console.log(tag);
   }
 
   getCurrentPage(): number {
