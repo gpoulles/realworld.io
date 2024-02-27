@@ -10,6 +10,8 @@ import { PopularTagsComponent } from './popular-tags/popular-tags.component';
 import { TagsService } from '../../shared/services/tags.service';
 import { TabNavBarItem } from '../../shared/interfaces/tab-nav-bar.interface';
 import { TabNavBarComponent } from '../../shared/ui/tab-nav-bar/tab-nav-bar.component';
+import { ArticlesApiFilters } from '../../shared/interfaces/article-api.interface';
+import { TabNavBarType } from '../../shared/enums/tab-nav-bar-type.enum';
 
 @Component({
   selector: 'conduit-home',
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
   articlesResponse: Articles = { articles: [], articlesCount: 0 };
   tagsResponse: string[] = [];
 
-  offset = 0;
+  filters: ArticlesApiFilters = { offset: 0 };
 
   constructor(
     private readonly articlesService: ArticlesService,
@@ -39,34 +41,41 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadArticles();
+    this.loadArticles(this.filters);
     this.loadTags();
   }
 
   switchPage(page: number) {
-    this.offset = (page - 1) * ARTICLES_PER_PAGE;
-    this.loadArticles();
+    this.loadArticles({
+      ...this.filters,
+      offset: (page - 1) * ARTICLES_PER_PAGE,
+    });
   }
 
   loadArticlesByTag(tag: string) {
-    console.log(tag);
+    this.loadArticles({ ...this.filters, tag });
   }
 
-  tabNavbarItemSelected(item: TabNavBarItem) {
-    console.log(item);
+  tabNavbarItemSelected(tabNavBarItem: TabNavBarItem) {
+    if (tabNavBarItem.type !== TabNavBarType.TAG) {
+      this.loadArticles({
+        offset: 0,
+      });
+    }
   }
 
   getCurrentPage(): number {
-    return this.offset / ARTICLES_PER_PAGE + 1;
+    return this.filters.offset / ARTICLES_PER_PAGE + 1;
   }
 
   getTotalPages(): number {
     return Math.ceil(this.articlesResponse.articlesCount / ARTICLES_PER_PAGE);
   }
 
-  private loadArticles() {
+  private loadArticles(filters: ArticlesApiFilters) {
+    this.filters = filters;
     this.articlesService
-      .getArticles(this.offset)
+      .getArticles(filters)
       .pipe(
         tap({
           subscribe: () => (this.loadingArticles = true),
