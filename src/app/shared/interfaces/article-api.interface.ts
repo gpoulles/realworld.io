@@ -18,10 +18,13 @@ export interface ArticleApiResponse {
   favorited: true;
   favoritesCount: 0;
 }
-
 interface AuthorApiResponse {
   username: 'string';
   bio: 'string';
   image: 'string';
   following: true;
+}
+export interface ArticlesApiFilters {
+  offset: number;
+  tag?: string;
 }

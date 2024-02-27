@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { ARTICLES_PER_PAGE } from '../constants/api.constant';
 import {
   ArticleApiResponse,
+  ArticlesApiFilters,
   ArticlesApiResponse,
 } from '../interfaces/article-api.interface';
 import { environment } from '../../../environments/environment';
@@ -17,10 +18,19 @@ export class ArticlesService {
 
   endpoint = environment.endpointDomain + 'articles';
 
-  getArticles(offset = 0): Observable<Articles> {
-    const params = new HttpParams()
-      .append('limit', ARTICLES_PER_PAGE.toString())
-      .append('offset', offset.toString());
+  getArticles(filters: ArticlesApiFilters): Observable<Articles> {
+    let params = new HttpParams().append('limit', ARTICLES_PER_PAGE.toString());
+
+    Object.keys(filters).forEach((key: string) => {
+      const propertyKey = key as keyof ArticlesApiFilters;
+      if (filters[propertyKey] !== null && filters[propertyKey] !== undefined) {
+        params = params.append(
+          propertyKey,
+          filters[propertyKey]?.toString() ?? ''
+        );
+      }
+    });
+
     return this.http
       .get<ArticlesApiResponse>(this.endpoint, {
         params,
