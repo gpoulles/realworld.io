@@ -1,0 +1,7 @@
+<ul class="nav nav-pills outline-active">
+  @for (item of items; track item){
+    <li class="nav-item" >
+      <a class="nav-link" [class.active]="item.active" (click)="itemSelected.emit(item)">{{item.label}}</a>
+    </li>
+  }
+</ul>

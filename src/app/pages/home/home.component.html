@@ -9,6 +9,9 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
+        <div class="feed-toggle">
+          <conduit-tab-nav-bar  (itemSelected)="tabNavbarItemSelected($event)"></conduit-tab-nav-bar>
+        </div>
         @if (loadingArticles){
           Loading articles...
         } @else {

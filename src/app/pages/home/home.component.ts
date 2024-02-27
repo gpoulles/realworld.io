@@ -8,6 +8,8 @@ import { ArticleListComponent } from '../../shared/ui/article-list/article-list.
 import { Articles } from '../../shared/interfaces/article.interface';
 import { PopularTagsComponent } from './popular-tags/popular-tags.component';
 import { TagsService } from '../../shared/services/tags.service';
+import { TabNavBarItem } from '../../shared/interfaces/tab-nav-bar.interface';
+import { TabNavBarComponent } from '../../shared/ui/tab-nav-bar/tab-nav-bar.component';
 
 @Component({
   selector: 'conduit-home',
@@ -17,6 +19,7 @@ import { TagsService } from '../../shared/services/tags.service';
     PaginationComponent,
     ArticleListComponent,
     PopularTagsComponent,
+    TabNavBarComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -47,6 +50,10 @@ export class HomeComponent implements OnInit {
 
   loadArticlesByTag(tag: string) {
     console.log(tag);
+  }
+
+  tabNavbarItemSelected(item: TabNavBarItem) {
+    console.log(item);
   }
 
   getCurrentPage(): number {
