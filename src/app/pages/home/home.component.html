@@ -10,10 +10,12 @@
     <div class="row">
       <div class="col-md-9">
         <div class="feed-toggle">
-          <conduit-tab-nav-bar  (itemSelected)="tabNavbarItemSelected($event)"></conduit-tab-nav-bar>
+          <conduit-tab-nav-bar [items]="tabNavbarItems"  (itemSelected)="tabNavbarItemSelected($event)"></conduit-tab-nav-bar>
         </div>
         @if (loadingArticles){
-          Loading articles...
+          <div class="mt-2">
+            Loading articles...
+          </div>
         } @else {
           <conduit-article-list [articles]="articlesResponse.articles"></conduit-article-list>
           <conduit-pagination [currentPage]="getCurrentPage()" [totalPages]="getTotalPages()" (pageSelected)="switchPage($event)"></conduit-pagination>

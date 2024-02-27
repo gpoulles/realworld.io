@@ -35,6 +35,14 @@ export class HomeComponent implements OnInit {
 
   filters: ArticlesApiFilters = { offset: 0 };
 
+  tabNavbarItems: TabNavBarItem[] = [
+    {
+      type: TabNavBarType.GLOBALFEED,
+      label: 'Global Feed',
+      active: true,
+    },
+  ];
+
   constructor(
     private readonly articlesService: ArticlesService,
     private readonly tagsService: TagsService
@@ -53,14 +61,22 @@ export class HomeComponent implements OnInit {
   }
 
   loadArticlesByTag(tag: string) {
-    this.loadArticles({ ...this.filters, tag });
+    this.updateTabNavBar({ type: TabNavBarType.TAG, label: tag, active: true });
+    this.loadArticles({ offset: 0, tag });
   }
 
   tabNavbarItemSelected(tabNavBarItem: TabNavBarItem) {
+    const tabNavBarItemIndex = this.tabNavbarItems.findIndex(
+      (item) => item.label == tabNavBarItem.label
+    );
+
+    if (tabNavBarItemIndex > -1)
+      this.tabNavbarItems[tabNavBarItemIndex].active = true;
     if (tabNavBarItem.type !== TabNavBarType.TAG) {
       this.loadArticles({
         offset: 0,
       });
+      this.removeTagFromTabNavBar();
     }
   }
 
@@ -105,5 +121,38 @@ export class HomeComponent implements OnInit {
         },
         error: (error) => console.log(error),
       });
+  }
+
+  private removeTagFromTabNavBar() {
+    const tagIndex = this.getTabNavBarTagIndex();
+    if (tagIndex > -1) this.tabNavbarItems.splice(tagIndex, 1);
+  }
+
+  private updateTabNavBar(item: TabNavBarItem) {
+    const tagIndex = this.getTabNavBarTagIndex();
+    this.tabNavbarItems.map((item) => (item.active = false));
+    if (tagIndex === -1) {
+      this.tabNavbarItems.push({
+        label: this.getTabNavBarTagLabel(item.label),
+        type: TabNavBarType.TAG,
+        active: true,
+      });
+    } else {
+      this.tabNavbarItems[tagIndex] = {
+        ...this.tabNavbarItems[tagIndex],
+        label: this.getTabNavBarTagLabel(item.label),
+        active: true,
+      };
+    }
+  }
+
+  private getTabNavBarTagIndex(): number {
+    return this.tabNavbarItems.findIndex(
+      (item) => item.type === TabNavBarType.TAG
+    );
+  }
+
+  private getTabNavBarTagLabel(label: string): string {
+    return '#' + label;
   }
 }

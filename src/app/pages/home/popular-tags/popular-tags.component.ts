@@ -8,6 +8,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './popular-tags.component.scss',
 })
 export class PopularTagsComponent {
-  @Input() tags: string[] = ['test1', 'test2', 'test3'];
+  @Input() tags: string[] = [];
   @Output() tagSelected: EventEmitter<string> = new EventEmitter<string>();
 }
