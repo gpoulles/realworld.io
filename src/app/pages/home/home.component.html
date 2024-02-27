@@ -20,7 +20,11 @@
       <div class="col-md-3">
         <div class="sidebar">
           <p>Popular Tags</p>
-            <conduit-popular-tags  (tagSelected)="loadArticlesByTag($event)"></conduit-popular-tags>
+          @if(loadingTags){
+            Loading tags
+          }@else{
+            <conduit-popular-tags [tags]="tagsResponse" (tagSelected)="loadArticlesByTag($event)"></conduit-popular-tags>
+          }
         </div>
       </div>
     </div>

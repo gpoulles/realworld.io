@@ -7,6 +7,7 @@ import { tap } from 'rxjs';
 import { ArticleListComponent } from '../../shared/ui/article-list/article-list.component';
 import { Articles } from '../../shared/interfaces/article.interface';
 import { PopularTagsComponent } from './popular-tags/popular-tags.component';
+import { TagsService } from '../../shared/services/tags.service';
 
 @Component({
   selector: 'conduit-home',
@@ -22,13 +23,21 @@ import { PopularTagsComponent } from './popular-tags/popular-tags.component';
 })
 export class HomeComponent implements OnInit {
   loadingArticles = false;
-  articlesResponse: Articles = { articles: [], articlesCount: 0 };
-  offset: number = 0;
+  loadingTags = false;
 
-  constructor(private readonly articlesService: ArticlesService) {}
+  articlesResponse: Articles = { articles: [], articlesCount: 0 };
+  tagsResponse: string[] = [];
+
+  offset = 0;
+
+  constructor(
+    private readonly articlesService: ArticlesService,
+    private readonly tagsService: TagsService
+  ) {}
 
   ngOnInit() {
     this.loadArticles();
+    this.loadTags();
   }
 
   switchPage(page: number) {
@@ -60,6 +69,23 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.articlesResponse = response;
+        },
+        error: (error) => console.log(error),
+      });
+  }
+
+  private loadTags() {
+    this.tagsService
+      .getTags()
+      .pipe(
+        tap({
+          subscribe: () => (this.loadingTags = true),
+          finalize: () => (this.loadingTags = false),
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          this.tagsResponse = response;
         },
         error: (error) => console.log(error),
       });
