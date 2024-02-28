@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RegisterApiDto } from '../../../shared/interfaces/register-api.interface';
+import { UserRegisterApiDto } from '../../../shared/interfaces/users-api.interface';
 
 @Component({
   selector: 'conduit-register-form',
@@ -15,8 +15,8 @@ import { RegisterApiDto } from '../../../shared/interfaces/register-api.interfac
   styleUrl: './register-form.component.scss',
 })
 export class RegisterFormComponent implements OnInit {
-  @Output() submitted: EventEmitter<RegisterApiDto> =
-    new EventEmitter<RegisterApiDto>();
+  @Output() submitted: EventEmitter<UserRegisterApiDto> =
+    new EventEmitter<UserRegisterApiDto>();
   registerForm!: FormGroup;
 
   ngOnInit() {

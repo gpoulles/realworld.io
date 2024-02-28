@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginApiDto } from '../../../shared/interfaces/login-api.interface';
+import { UserLoginApiDto } from '../../../shared/interfaces/users-api.interface';
 
 @Component({
   selector: 'conduit-login-form',
@@ -15,8 +15,8 @@ import { LoginApiDto } from '../../../shared/interfaces/login-api.interface';
   styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit {
-  @Output() submitted: EventEmitter<LoginApiDto> =
-    new EventEmitter<LoginApiDto>();
+  @Output() submitted: EventEmitter<UserLoginApiDto> =
+    new EventEmitter<UserLoginApiDto>();
   loginForm!: FormGroup;
 
   ngOnInit() {

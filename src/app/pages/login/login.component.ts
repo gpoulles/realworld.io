@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginFormComponent } from './login-form/login-form.component';
-import { LoginApiDto } from '../../shared/interfaces/login-api.interface';
+import { UsersService } from '../../shared/services/users.service';
+import { UserLoginApiDto } from '../../shared/interfaces/users-api.interface';
 
 @Component({
   selector: 'conduit-login',
@@ -10,7 +11,11 @@ import { LoginApiDto } from '../../shared/interfaces/login-api.interface';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  login($event: LoginApiDto) {
-    console.log($event);
+  constructor(private readonly usersService: UsersService) {}
+  login(loginFormValue: UserLoginApiDto) {
+    this.usersService.loginUser(loginFormValue).subscribe({
+      next: (user) => console.log('redirect User', user),
+      error: (error) => console.log('error', error),
+    });
   }
 }

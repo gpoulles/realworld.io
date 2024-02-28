@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RegisterFormComponent } from './register-form/register-form.component';
-import { RegisterApiDto } from '../../shared/interfaces/register-api.interface';
+import { UserRegisterApiDto } from '../../shared/interfaces/users-api.interface';
+import { UsersService } from '../../shared/services/users.service';
 
 @Component({
   selector: 'conduit-register',
@@ -10,7 +11,11 @@ import { RegisterApiDto } from '../../shared/interfaces/register-api.interface';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  register($event: RegisterApiDto) {
-    console.log($event);
+  constructor(private readonly usersService: UsersService) {}
+  register(registerFormValue: UserRegisterApiDto) {
+    this.usersService.registerUser(registerFormValue).subscribe({
+      next: (user) => console.log('user registered', user),
+      error: (error) => console.log('error', error),
+    });
   }
 }
