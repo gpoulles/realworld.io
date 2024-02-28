@@ -11,10 +11,26 @@ export interface User {
 }
 
 export interface UserLoginApiDto {
-  email: string;
-  password: string;
+  user: {
+    email: string;
+    password: string;
+  };
 }
 
-export interface UserRegisterApiDto extends UserLoginApiDto {
-  username: string;
+export interface UserRegisterApiDto {
+  user: {
+    email: string;
+    password: string;
+    username: string;
+  };
+}
+
+export interface UserUpdateApiDto {
+  user: {
+    email: string;
+    password: string;
+    username: string;
+    bio: string;
+    image: string;
+  };
 }

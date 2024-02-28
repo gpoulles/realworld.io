@@ -31,6 +31,7 @@ export class RegisterFormComponent implements OnInit {
   }
 
   submit() {
-    if (this.registerForm.valid) this.submitted.emit(this.registerForm?.value);
+    if (this.registerForm.valid)
+      this.submitted.emit({ user: this.registerForm.value });
   }
 }

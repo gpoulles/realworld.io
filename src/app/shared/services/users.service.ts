@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 import {
@@ -8,6 +8,7 @@ import {
   User,
   UserApiResponse,
   UserRegisterApiDto,
+  UserUpdateApiDto,
 } from '../interfaces/users-api.interface';
 import { Router } from '@angular/router';
 
@@ -41,9 +42,25 @@ export class UsersService {
     );
   }
 
-  getCurrentUser() {}
+  getCurrentUser(): Observable<User> {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http.get<UserApiResponse>(this.endpoint, { headers }).pipe(
+      map((response) => {
+        return response.user;
+      })
+    );
+  }
 
-  updateCurrentUser() {}
+  updateCurrentUser(payload: UserUpdateApiDto): Observable<User> {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http
+      .put<UserApiResponse>(this.endpoint, payload, { headers })
+      .pipe(
+        map((response) => {
+          return response.user;
+        })
+      );
+  }
 
   logout() {
     localStorage.removeItem('token');

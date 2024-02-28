@@ -5,7 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SettingsApiDto } from '../../../shared/interfaces/settings-api.interface';
+
+import { UserUpdateApiDto } from '../../../shared/interfaces/users-api.interface';
 
 @Component({
   selector: 'conduit-settings-form',
@@ -15,8 +16,8 @@ import { SettingsApiDto } from '../../../shared/interfaces/settings-api.interfac
   styleUrl: './settings-form.component.scss',
 })
 export class SettingsFormComponent implements OnInit {
-  @Output() submitted: EventEmitter<SettingsApiDto> =
-    new EventEmitter<SettingsApiDto>();
+  @Output() submitted: EventEmitter<UserUpdateApiDto> =
+    new EventEmitter<UserUpdateApiDto>();
   settingsForm!: FormGroup;
 
   ngOnInit() {
@@ -33,6 +34,7 @@ export class SettingsFormComponent implements OnInit {
   }
 
   submit() {
-    if (this.settingsForm.valid) this.submitted.emit(this.settingsForm?.value);
+    if (this.settingsForm.valid)
+      this.submitted.emit({ user: this.settingsForm.value });
   }
 }

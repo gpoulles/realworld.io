@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SettingsFormComponent } from './settings-form/settings-form.component';
-import { SettingsApiDto } from '../../shared/interfaces/settings-api.interface';
 import { UsersService } from '../../shared/services/users.service';
+import { UserUpdateApiDto } from '../../shared/interfaces/users-api.interface';
 
 @Component({
   selector: 'conduit-settings',
@@ -13,8 +13,11 @@ import { UsersService } from '../../shared/services/users.service';
 export class SettingsComponent {
   constructor(private readonly usersService: UsersService) {}
 
-  saveChanges($event: SettingsApiDto) {
-    console.log($event);
+  saveChanges(payload: UserUpdateApiDto) {
+    this.usersService.updateCurrentUser(payload).subscribe({
+      next: (user) => console.log('User Updated', user),
+      error: (error) => console.log(error),
+    });
   }
 
   logout() {
