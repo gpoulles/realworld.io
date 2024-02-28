@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
@@ -16,6 +16,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UsersService {
+  currentUser = signal<User | null>(null);
+
   endpoint = environment.endpointDomain + 'users';
   constructor(
     private readonly http: HttpClient,
@@ -43,6 +45,14 @@ export class UsersService {
   }
 
   getCurrentUser(): Observable<User> {
+    const testUser: User = {
+      username: 'Test USERNAME',
+      email: 'gpoulles@gmail.com',
+      bio: 'Just a test',
+      image: 'https://ui-avatars.com/api/?name=John+Doe',
+      token: '123123',
+    };
+    this.currentUser.set(testUser);
     const headers = new HttpHeaders().set('addAuthToken', 'true');
     return this.http.get<UserApiResponse>(this.endpoint, { headers }).pipe(
       map((response) => {
