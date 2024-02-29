@@ -8,10 +8,11 @@
           <li>That name is required</li>
         </ul>
 
-        <conduit-settings-form (submitted)="saveChanges($event)"></conduit-settings-form>
+        <conduit-settings-form (submitted)="saveChanges($event)" [currentUser]="usersService.currentUser()"></conduit-settings-form>
         <hr />
         <button class="btn btn-outline-danger" (click)="logout()">Or click here to logout.</button>
       </div>
     </div>
   </div>
 </div>
+

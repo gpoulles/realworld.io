@@ -9,9 +9,9 @@ export function AuthenticationInterceptor(
 
   if (authToken && req.headers.has('addAuthToken')) {
     req = req.clone({
-      setHeaders: {
-        Authorization: `Token ${authToken}`,
-      },
+      headers: req.headers
+        .set('Authorization', `Token ${authToken}`)
+        .delete('addAuthToken'),
     });
   }
 

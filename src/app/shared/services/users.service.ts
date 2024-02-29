@@ -18,7 +18,8 @@ import { Router } from '@angular/router';
 export class UsersService {
   currentUser = signal<User | null>(null);
 
-  endpoint = environment.endpointDomain + 'users';
+  usersEndpoint = environment.endpointDomain + 'users';
+  userEndpoint = environment.endpointDomain + 'user';
   constructor(
     private readonly http: HttpClient,
     private readonly router: Router
@@ -26,7 +27,7 @@ export class UsersService {
 
   loginUser(payload: UserLoginApiDto): Observable<User> {
     return this.http
-      .post<UserApiResponse>(this.endpoint + '/login', payload)
+      .post<UserApiResponse>(this.usersEndpoint + '/login', payload)
       .pipe(
         map((response) => {
           localStorage.setItem('token', response.user.token);
@@ -36,7 +37,7 @@ export class UsersService {
   }
 
   registerUser(payload: UserRegisterApiDto): Observable<User> {
-    return this.http.post<UserApiResponse>(this.endpoint, payload).pipe(
+    return this.http.post<UserApiResponse>(this.usersEndpoint, payload).pipe(
       map((response) => {
         localStorage.setItem('token', response.user.token);
         return response.user;
@@ -45,17 +46,10 @@ export class UsersService {
   }
 
   getCurrentUser(): Observable<User> {
-    const testUser: User = {
-      username: 'Test USERNAME',
-      email: 'gpoulles@gmail.com',
-      bio: 'Just a test',
-      image: 'https://ui-avatars.com/api/?name=John+Doe',
-      token: '123123',
-    };
-    this.currentUser.set(testUser);
     const headers = new HttpHeaders().set('addAuthToken', 'true');
-    return this.http.get<UserApiResponse>(this.endpoint, { headers }).pipe(
+    return this.http.get<UserApiResponse>(this.userEndpoint, { headers }).pipe(
       map((response) => {
+        this.currentUser.set(response.user);
         return response.user;
       })
     );
@@ -64,9 +58,10 @@ export class UsersService {
   updateCurrentUser(payload: UserUpdateApiDto): Observable<User> {
     const headers = new HttpHeaders().set('addAuthToken', 'true');
     return this.http
-      .put<UserApiResponse>(this.endpoint, payload, { headers })
+      .put<UserApiResponse>(this.userEndpoint, payload, { headers })
       .pipe(
         map((response) => {
+          this.currentUser.set(response.user);
           return response.user;
         })
       );

@@ -11,7 +11,7 @@ import { UserUpdateApiDto } from '../../shared/interfaces/users-api.interface';
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(public readonly usersService: UsersService) {}
 
   saveChanges(payload: UserUpdateApiDto) {
     this.usersService.updateCurrentUser(payload).subscribe({
