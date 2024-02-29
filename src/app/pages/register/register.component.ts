@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { UserRegisterApiDto } from '../../shared/interfaces/users-api.interface';
 import { UsersService } from '../../shared/services/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'conduit-register',
@@ -11,10 +12,13 @@ import { UsersService } from '../../shared/services/users.service';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly router: Router
+  ) {}
   register(registerFormValue: UserRegisterApiDto) {
     this.usersService.registerUser(registerFormValue).subscribe({
-      next: (user) => console.log('user registered', user),
+      next: () => this.router.navigate(['/']),
       error: (error) => console.log('error', error),
     });
   }
