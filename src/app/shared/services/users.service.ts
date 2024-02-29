@@ -31,6 +31,7 @@ export class UsersService {
       .pipe(
         map((response) => {
           localStorage.setItem('token', response.user.token);
+          this.currentUser.set(response.user);
           return response.user;
         })
       );
@@ -40,6 +41,7 @@ export class UsersService {
     return this.http.post<UserApiResponse>(this.usersEndpoint, payload).pipe(
       map((response) => {
         localStorage.setItem('token', response.user.token);
+        this.currentUser.set(response.user);
         return response.user;
       })
     );

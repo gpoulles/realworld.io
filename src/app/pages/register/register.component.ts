@@ -19,7 +19,9 @@ export class RegisterComponent {
   register(registerFormValue: UserRegisterApiDto) {
     this.usersService.registerUser(registerFormValue).subscribe({
       next: () => this.router.navigate(['/']),
-      error: (error) => console.log('error', error),
+      error: (error) => {
+        error.errors.map();
+      },
     });
   }
 }
