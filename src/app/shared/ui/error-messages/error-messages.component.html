@@ -1,0 +1,7 @@
+@if(errorMessages.length){
+  <ul class="error-messages">
+    @for(errorMessage of errorMessages; track errorMessage){
+      <li>{{errorMessage | titlecase}}</li>
+    }
+  </ul>
+}
