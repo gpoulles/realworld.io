@@ -2,6 +2,17 @@ export interface UserApiResponse {
   user: User;
 }
 
+interface BasicUser {
+  email: string;
+  password: string;
+}
+
+interface UserProfile extends BasicUser {
+  username: string;
+  bio?: string;
+  image?: string;
+}
+
 export interface User {
   email: string;
   token: string;
@@ -11,26 +22,17 @@ export interface User {
 }
 
 export interface UserLoginApiDto {
-  user: {
-    email: string;
-    password: string;
-  };
+  user: BasicUser;
 }
 
 export interface UserRegisterApiDto {
-  user: {
-    email: string;
-    password: string;
-    username: string;
-  };
+  user: Omit<UserProfile, 'bio' | 'image'>;
 }
 
 export interface UserUpdateApiDto {
-  user: {
-    email: string;
-    password: string;
-    username: string;
-    bio: string;
-    image: string;
-  };
+  user: Partial<UserProfile>;
+}
+
+export interface User extends UserProfile {
+  token: string;
 }
