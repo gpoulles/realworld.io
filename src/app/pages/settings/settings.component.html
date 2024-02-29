@@ -3,12 +3,8 @@
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
         <h1 class="text-xs-center">Your Settings</h1>
-
-        <ul class="error-messages">
-          <li>That name is required</li>
-        </ul>
-
-        <conduit-settings-form (submitted)="saveChanges($event)" [currentUser]="usersService.currentUser()"></conduit-settings-form>
+        <conduit-error-messages  [errorMessages]="errorMessages"></conduit-error-messages>
+        <conduit-settings-form (submitted)="saveChanges($event)" [currentUser]="usersService.currentUser()" ></conduit-settings-form>
         <hr />
         <button class="btn btn-outline-danger" (click)="logout()">Or click here to logout.</button>
       </div>

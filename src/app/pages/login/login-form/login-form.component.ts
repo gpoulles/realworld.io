@@ -6,11 +6,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { UserLoginApiDto } from '../../../shared/interfaces/users-api.interface';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'conduit-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TitleCasePipe],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
