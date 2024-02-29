@@ -16,9 +16,10 @@ export class AppComponent implements OnInit {
 
   constructor(private readonly usersService: UsersService) {}
   ngOnInit() {
-    this.usersService.getCurrentUser().subscribe({
-      next: (user) => console.log(user),
-      error: (error) => console.log(error),
-    });
+    if (localStorage.getItem('token'))
+      this.usersService.getCurrentUser().subscribe({
+        next: (user) => console.log(user),
+        error: (error) => console.log(error),
+      });
   }
 }
