@@ -19,7 +19,7 @@ export class SettingsComponent {
 
   saveChanges(payload: UserUpdateApiDto) {
     this.usersService.updateCurrentUser(payload).subscribe({
-      next: (user) => console.log('User Updated', user),
+      next: () => {},
       error: (error: ErrorResponse) => {
         this.errorMessages = error.error.errorMessages || [
           'An unexpected error occurred.',

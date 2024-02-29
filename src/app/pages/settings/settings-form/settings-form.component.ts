@@ -33,7 +33,6 @@ export class SettingsFormComponent implements OnInit, OnChanges {
   settingsForm!: FormGroup;
 
   ngOnInit() {
-    console.log(this.currentUser);
     this.settingsForm = new FormGroup({
       username: new FormControl<string>(this.currentUser?.username ?? '', [
         Validators.required,
