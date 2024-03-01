@@ -1,1 +1,15 @@
-<conduit-editor-form (submitted)="saveChanges($event)"></conduit-editor-form>
+<div class="editor-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-10 offset-md-1 col-xs-12">
+          @if(loadingArticle){
+            Loading Article...
+          }@else if(article){
+            <conduit-editor-form (submitted)="saveChanges($event)" [article]="article"></conduit-editor-form>
+          }@else{
+            Something went wrong
+          }
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,16 +19,22 @@ import { ArticleApiDto } from '../../../shared/interfaces/article-api.interface'
 export class EditorFormComponent implements OnInit {
   @Output() submitted: EventEmitter<ArticleApiDto> =
     new EventEmitter<ArticleApiDto>();
-  @Input() article: Article | undefined = undefined;
+  @Input() article: Article | undefined;
   articleForm!: FormGroup;
 
   ngOnInit() {
     this.articleForm = new FormGroup({
-      title: new FormControl<string>('', [Validators.required]),
-      description: new FormControl<string>('', [Validators.required]),
-      body: new FormControl<string>('', [Validators.required]),
+      title: new FormControl<string>(this.article?.title ?? '', [
+        Validators.required,
+      ]),
+      description: new FormControl<string>(this.article?.excerpt ?? '', [
+        Validators.required,
+      ]),
+      body: new FormControl<string>(this.article?.body ?? '', [
+        Validators.required,
+      ]),
       tag: new FormControl<string>(''),
-      tagList: new FormControl<string[]>([]),
+      tagList: new FormControl<string[]>(this.article?.tags ?? []),
     });
   }
 

@@ -16,8 +16,8 @@ export const routes: Routes = [
   {
     path: 'editor',
     component: EditorComponent,
-    children: [{ path: ':slug', component: EditorArticleComponent }],
   },
+  { path: 'editor/:slug', component: EditorArticleComponent },
   {
     path: 'settings',
     component: SettingsComponent,

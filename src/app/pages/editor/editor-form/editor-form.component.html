@@ -23,7 +23,11 @@
       </div>
     </fieldset>
     <button class="btn btn-lg pull-xs-right btn-primary" type="button" [disabled]="!articleForm.valid" (click)="submit()">
-      Publish Article
+      @if(article){
+        Update
+      }@else{
+        Publish
+      } Article
     </button>
   </fieldset>
 </form>
