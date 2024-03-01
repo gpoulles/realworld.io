@@ -1,6 +1,6 @@
 export interface ArticlesApiResponse {
   articles: ArticleApiResponse[];
-  articlesCount: 0;
+  articlesCount: number;
 }
 
 export interface ArticleApiResponse {
@@ -8,20 +8,20 @@ export interface ArticleApiResponse {
 }
 export interface ArticleApiResponse {
   author: AuthorApiResponse;
-  slug: 'string';
-  title: 'string';
-  description: 'string';
-  body: 'string';
-  tagList: ['string'];
-  createdAt: '2024-02-24T13:31:46.917Z';
-  updatedAt: '2024-02-24T13:31:46.917Z';
-  favorited: true;
-  favoritesCount: 0;
+  slug: string;
+  title: string;
+  description: string;
+  body: string;
+  tagList: [string];
+  createdAt: string;
+  updatedAt: string;
+  favorited: boolean;
+  favoritesCount: number;
 }
 interface AuthorApiResponse {
-  username: 'string';
-  bio: 'string';
-  image: 'string';
+  username: string;
+  bio: string;
+  image: string;
   following: true;
 }
 export interface ArticlesApiFilters {
@@ -30,10 +30,12 @@ export interface ArticlesApiFilters {
 }
 
 export interface ArticleApiDto {
-  article: {
-    title: 'string';
-    description: 'string';
-    body: 'string';
-    tagList: ['string'];
-  };
+  article: ArticleApiArticleDto;
+}
+
+export interface ArticleApiArticleDto {
+  title: string;
+  description: string;
+  body: string;
+  tagList: [string];
 }
