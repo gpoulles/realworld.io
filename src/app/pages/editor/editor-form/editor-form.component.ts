@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Article } from '../../../shared/interfaces/article.interface';
 import { ErrorMessagesComponent } from '../../../shared/ui/error-messages/error-messages.component';
+import { ArticleApiDto } from '../../../shared/interfaces/article-api.interface';
 
 @Component({
   selector: 'conduit-editor-form',
@@ -16,7 +17,8 @@ import { ErrorMessagesComponent } from '../../../shared/ui/error-messages/error-
   styleUrl: './editor-form.component.scss',
 })
 export class EditorFormComponent implements OnInit {
-  @Output() submitted: EventEmitter<any> = new EventEmitter<any>();
+  @Output() submitted: EventEmitter<ArticleApiDto> =
+    new EventEmitter<ArticleApiDto>();
   @Input() article: Article | undefined = undefined;
   articleForm!: FormGroup;
 
@@ -31,7 +33,8 @@ export class EditorFormComponent implements OnInit {
   }
 
   submit() {
-    if (this.articleForm.valid) this.submitted.emit(this.articleForm.value);
+    if (this.articleForm.valid)
+      this.submitted.emit({ article: this.articleForm.value });
   }
 
   addTag() {

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Article, Articles } from '../interfaces/article.interface';
 import { map, Observable } from 'rxjs';
 import { ARTICLES_PER_PAGE } from '../constants/api.constant';
 import {
+  ArticleApiDto,
   ArticleApiResponse,
   ArticlesApiFilters,
   ArticlesApiResponse,
@@ -48,6 +49,19 @@ export class ArticlesService {
         return this.mapArticleResponse(response.article);
       })
     );
+  }
+
+  createArticle(article: ArticleApiDto): Observable<Article> {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http
+      .post<ArticleApiResponse>(this.endpoint, article, {
+        headers,
+      })
+      .pipe(
+        map((response: ArticleApiResponse) => {
+          return this.mapArticleResponse(response.article);
+        })
+      );
   }
 
   private mapArticlesResponse(response: ArticlesApiResponse): Articles {
