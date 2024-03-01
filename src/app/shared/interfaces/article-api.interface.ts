@@ -28,3 +28,12 @@ export interface ArticlesApiFilters {
   offset: number;
   tag?: string;
 }
+
+export interface ArticleApiDto {
+  article: {
+    title: 'string';
+    description: 'string';
+    body: 'string';
+    tagList: ['string'];
+  };
+}
