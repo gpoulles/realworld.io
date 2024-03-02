@@ -11,9 +11,7 @@
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
           <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
           <conduit-edit-article (edit)="router.navigate(['editor', article?.slug])"></conduit-edit-article>
-          <button class="btn btn-sm btn-outline-danger">
-            <i class="ion-trash-a"></i> Delete Article
-          </button>
+          <conduit-delete-article (delete)="deleteArticle()"></conduit-delete-article>
         </div>
       </div>
     </div>
@@ -35,6 +33,7 @@
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
           <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
+          <conduit-delete-article (delete)="deleteArticle()"></conduit-delete-article>
         </div>
       </div>
     </div>

@@ -17,8 +17,6 @@ import { environment } from '../../../environments/environment';
 export class ArticlesService {
   constructor(private http: HttpClient) {}
 
-  endpoint = environment.endpointDomain + 'articles';
-
   getArticles(filters: ArticlesApiFilters): Observable<Articles> {
     let params = new HttpParams().append('limit', ARTICLES_PER_PAGE.toString());
 
@@ -33,7 +31,7 @@ export class ArticlesService {
     });
 
     return this.http
-      .get<ArticlesApiResponse>(this.endpoint, {
+      .get<ArticlesApiResponse>(this.generateEndpoint(), {
         params,
       })
       .pipe(
@@ -44,7 +42,7 @@ export class ArticlesService {
   }
 
   getArticle(slug: string): Observable<Article> {
-    return this.http.get<ArticleApiResponse>(this.endpoint + '/' + slug).pipe(
+    return this.http.get<ArticleApiResponse>(this.generateEndpoint(slug)).pipe(
       map((response: ArticleApiResponse) => {
         return this.mapArticleResponse(response.article);
       })
@@ -54,7 +52,7 @@ export class ArticlesService {
   createArticle(article: ArticleApiDto): Observable<Article> {
     const headers = new HttpHeaders().set('addAuthToken', 'true');
     return this.http
-      .post<ArticleApiResponse>(this.endpoint, article, {
+      .post<ArticleApiResponse>(this.generateEndpoint(), article, {
         headers,
       })
       .pipe(
@@ -62,6 +60,26 @@ export class ArticlesService {
           return this.mapArticleResponse(response.article);
         })
       );
+  }
+
+  updateArticle(slug: string, article: ArticleApiDto): Observable<Article> {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http
+      .put<ArticleApiResponse>(this.generateEndpoint(slug), article, {
+        headers,
+      })
+      .pipe(
+        map((response: ArticleApiResponse) => {
+          return this.mapArticleResponse(response.article);
+        })
+      );
+  }
+
+  deleteArticle(slug: string) {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http.delete<void>(this.generateEndpoint(slug), {
+      headers,
+    });
   }
 
   private mapArticlesResponse(response: ArticlesApiResponse): Articles {
@@ -87,5 +105,10 @@ export class ArticlesService {
         picture: article.author.image,
       },
     };
+  }
+
+  private generateEndpoint(slug?: string): string {
+    const appendix = slug ? '/' + slug : '';
+    return environment.endpointDomain + 'articles' + appendix;
   }
 }

@@ -7,6 +7,7 @@ import { tap } from 'rxjs';
 import { TagsComponent } from '../../shared/ui/tags/tags.component';
 import { FavoritesComponent } from '../../shared/ui/favorites/favorites.component';
 import { EditArticleComponent } from '../../shared/ui/edit-article/edit-article.component';
+import { DeleteArticleComponent } from '../../shared/ui/delete-article/delete-article.component';
 
 @Component({
   selector: 'conduit-article',
@@ -17,6 +18,7 @@ import { EditArticleComponent } from '../../shared/ui/edit-article/edit-article.
     FavoritesComponent,
     RouterLink,
     EditArticleComponent,
+    DeleteArticleComponent,
   ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',
@@ -41,6 +43,14 @@ export class ArticleComponent implements OnInit {
       )
       .subscribe({
         next: (response) => (this.article = response),
+        error: (error) => console.log(error),
+      });
+  }
+
+  deleteArticle() {
+    if (this.article)
+      this.articlesService.deleteArticle(this.article?.slug).subscribe({
+        next: () => this.router.navigate(['/']),
         error: (error) => console.log(error),
       });
   }

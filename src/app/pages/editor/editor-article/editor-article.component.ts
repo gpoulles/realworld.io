@@ -16,10 +16,12 @@ import { Article } from '../../../shared/interfaces/article.interface';
 export class EditorArticleComponent implements OnInit {
   article: Article | undefined;
   loadingArticle: boolean = false;
+  errorMessages: string[] = [];
 
   constructor(
     private readonly articlesService: ArticlesService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
   ngOnInit() {
     this.articlesService
@@ -35,7 +37,13 @@ export class EditorArticleComponent implements OnInit {
         error: (error) => console.log(error),
       });
   }
-  saveChanges(articleDto: ArticleApiDto) {
-    console.log(articleDto);
+  saveChanges(payload: ArticleApiDto) {
+    if (this.article)
+      this.articlesService.updateArticle(this.article.slug, payload).subscribe({
+        next: (article) => {
+          this.router.navigate(['/article', article.slug]);
+        },
+        error: (error) => (this.errorMessages = error.error.errorMessages),
+      });
   }
 }
