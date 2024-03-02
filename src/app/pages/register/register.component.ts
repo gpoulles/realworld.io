@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { UserRegisterApiDto } from '../../shared/interfaces/users-api.interface';
 import { UsersService } from '../../shared/services/users.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ErrorResponse } from '../../shared/interfaces/error.interface';
 import { LoginFormComponent } from '../login/login-form/login-form.component';
 import { ErrorMessagesComponent } from '../../shared/ui/error-messages/error-messages.component';
@@ -10,7 +10,12 @@ import { ErrorMessagesComponent } from '../../shared/ui/error-messages/error-mes
 @Component({
   selector: 'conduit-register',
   standalone: true,
-  imports: [RegisterFormComponent, LoginFormComponent, ErrorMessagesComponent],
+  imports: [
+    RegisterFormComponent,
+    LoginFormComponent,
+    ErrorMessagesComponent,
+    RouterLink,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
