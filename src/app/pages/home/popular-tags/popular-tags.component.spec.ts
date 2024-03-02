@@ -8,10 +8,9 @@ describe('PopularTagsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PopularTagsComponent]
-    })
-    .compileComponents();
-    
+      imports: [PopularTagsComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(PopularTagsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

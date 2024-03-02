@@ -8,10 +8,9 @@ describe('TabNavBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TabNavBarComponent]
-    })
-    .compileComponents();
-    
+      imports: [TabNavBarComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(TabNavBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
