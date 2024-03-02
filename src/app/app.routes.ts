@@ -7,17 +7,29 @@ import { LoginComponent } from './pages/login/login.component';
 import { authenticationGuard } from './shared/guards/authentication.guard';
 import { EditorComponent } from './pages/editor/editor.component';
 import { EditorArticleComponent } from './pages/editor/editor-article/editor-article.component';
+import { isAuthorGuard } from './shared/guards/isAuthor.guard';
+import { resetArticleGuard } from './shared/guards/resetArticle.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'article/:slug', component: ArticleComponent },
+  {
+    path: 'article/:slug',
+    component: ArticleComponent,
+    canDeactivate: [resetArticleGuard],
+  },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
     path: 'editor',
     component: EditorComponent,
+    canActivate: [authenticationGuard],
   },
-  { path: 'editor/:slug', component: EditorArticleComponent },
+  {
+    path: 'editor/:slug',
+    component: EditorArticleComponent,
+    canActivate: [authenticationGuard, isAuthorGuard],
+    canDeactivate: [resetArticleGuard],
+  },
   {
     path: 'settings',
     component: SettingsComponent,

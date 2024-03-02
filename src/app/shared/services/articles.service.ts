@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Article, Articles } from '../interfaces/article.interface';
 import { map, Observable } from 'rxjs';
@@ -15,6 +15,8 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ArticlesService {
+  currentArticle = signal<Article | null>(null);
+
   constructor(private http: HttpClient) {}
 
   getArticles(filters: ArticlesApiFilters): Observable<Articles> {
@@ -44,7 +46,9 @@ export class ArticlesService {
   getArticle(slug: string): Observable<Article> {
     return this.http.get<ArticleApiResponse>(this.generateEndpoint(slug)).pipe(
       map((response: ArticleApiResponse) => {
-        return this.mapArticleResponse(response.article);
+        const article = this.mapArticleResponse(response.article);
+        this.currentArticle.set(article);
+        return article;
       })
     );
   }

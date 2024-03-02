@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { EditorFormComponent } from '../editor-form/editor-form.component';
 import { ArticleApiDto } from '../../../shared/interfaces/article-api.interface';
-import { tap } from 'rxjs';
 import { ArticlesService } from '../../../shared/services/articles.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Article } from '../../../shared/interfaces/article.interface';
+import { ArticleBaseComponent } from '../../../shared/components/article-base/article-base.component';
 
 @Component({
   selector: 'conduit-editor-article',
@@ -13,30 +12,17 @@ import { Article } from '../../../shared/interfaces/article.interface';
   templateUrl: './editor-article.component.html',
   styleUrl: './editor-article.component.scss',
 })
-export class EditorArticleComponent implements OnInit {
-  article: Article | undefined;
-  loadingArticle: boolean = false;
+export class EditorArticleComponent extends ArticleBaseComponent {
   errorMessages: string[] = [];
 
   constructor(
-    private readonly articlesService: ArticlesService,
-    private readonly route: ActivatedRoute,
+    protected override articlesService: ArticlesService,
+    protected override route: ActivatedRoute,
     private readonly router: Router
-  ) {}
-  ngOnInit() {
-    this.articlesService
-      .getArticle(this.route.snapshot.params['slug'])
-      .pipe(
-        tap({
-          subscribe: () => (this.loadingArticle = true),
-          finalize: () => (this.loadingArticle = false),
-        })
-      )
-      .subscribe({
-        next: (response) => (this.article = response),
-        error: (error) => console.log(error),
-      });
+  ) {
+    super(articlesService, route);
   }
+
   saveChanges(payload: ArticleApiDto) {
     if (this.article)
       this.articlesService.updateArticle(this.article.slug, payload).subscribe({
