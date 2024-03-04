@@ -25,6 +25,6 @@
         formControlName="password"
       />
     </fieldset>
-    <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="settingsForm.valid">Update Settings</button>
+    <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="!settingsForm.valid">Update Settings</button>
   </fieldset>
 </form>
