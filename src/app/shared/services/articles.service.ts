@@ -74,6 +74,7 @@ export class ArticlesService {
       })
       .pipe(
         map((response: ArticleApiResponse) => {
+          this.currentArticle.set(this.mapArticleResponse(response.article));
           return this.mapArticleResponse(response.article);
         })
       );

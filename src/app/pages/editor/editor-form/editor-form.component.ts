@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,13 +23,13 @@ import { ArticleApiDto } from '../../../shared/interfaces/article-api.interface'
   templateUrl: './editor-form.component.html',
   styleUrl: './editor-form.component.scss',
 })
-export class EditorFormComponent implements OnInit {
+export class EditorFormComponent implements OnChanges {
   @Output() submitted: EventEmitter<ArticleApiDto> =
     new EventEmitter<ArticleApiDto>();
   @Input() article: Article | undefined;
   articleForm!: FormGroup;
 
-  ngOnInit() {
+  constructor() {
     this.articleForm = new FormGroup({
       title: new FormControl<string>(this.article?.title ?? '', [
         Validators.required,
@@ -38,6 +45,12 @@ export class EditorFormComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['article'] && changes['article'].currentValue) {
+      this.updateForm(changes['article'].currentValue);
+    }
+  }
+
   submit() {
     if (this.articleForm.valid)
       this.submitted.emit({ article: this.articleForm.value });
@@ -49,5 +62,14 @@ export class EditorFormComponent implements OnInit {
       this.articleForm.controls['tag'].value,
     ]);
     this.articleForm.controls['tag'].setValue('');
+  }
+
+  updateForm(article: Article): void {
+    this.articleForm.patchValue({
+      title: article.title,
+      description: article.excerpt,
+      body: article.body,
+      tagList: article.tags,
+    });
   }
 }
