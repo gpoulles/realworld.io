@@ -10,7 +10,7 @@
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
           <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
-          <conduit-edit-article (edit)="router.navigate(['editor', article?.slug])"></conduit-edit-article>
+          <conduit-edit-article (edit)="router.navigate(['editor', article.slug])"></conduit-edit-article>
           <conduit-delete-article (delete)="deleteArticle()"></conduit-delete-article>
         </div>
       </div>
