@@ -10,6 +10,7 @@ import {
   ArticlesApiResponse,
 } from '../interfaces/article-api.interface';
 import { environment } from '../../../environments/environment';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,10 @@ import { environment } from '../../../environments/environment';
 export class ArticlesService {
   currentArticle = signal<Article | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly usersService: UsersService
+  ) {}
 
   getArticles(filters: ArticlesApiFilters): Observable<Articles> {
     let params = new HttpParams().append('limit', ARTICLES_PER_PAGE.toString());
@@ -97,6 +101,7 @@ export class ArticlesService {
   }
 
   private mapArticleResponse(article: ArticleApiResponse): Article {
+    const user = this.usersService.currentUser();
     return {
       slug: article.slug,
       title: article.title,
@@ -108,6 +113,7 @@ export class ArticlesService {
       author: {
         name: article.author.username,
         picture: article.author.image,
+        ownUser: article.author.username === user?.username,
       },
     };
   }

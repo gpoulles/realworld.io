@@ -17,4 +17,5 @@ export interface Article {
 export interface Author {
   name: string;
   picture: string;
+  ownUser?: boolean;
 }
