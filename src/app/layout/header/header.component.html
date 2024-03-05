@@ -13,7 +13,7 @@
           <a class="nav-link" [class.active]="currentRoute==='settings'" [routerLink]="['/settings']"> <i class="ion-gear-a"></i>&nbsp;Settings </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link">
+          <a class="nav-link" [routerLink]="['/profile', usersService.currentUser()?.username]">
             <img [src]="usersService.currentUser()?.image" alt="profile picture" class="user-pic" />
             {{usersService.currentUser()?.username}}
           </a>

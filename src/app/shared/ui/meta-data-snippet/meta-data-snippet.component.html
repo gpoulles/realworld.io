@@ -1,7 +1,7 @@
 @if (author){
-  <a><img [src]="author.picture" /></a>
+  <a [routerLink]="['/profile', author.name]"><img [src]="author.picture" /></a>
   <div class="info">
-    <a class="author">{{author.name}}</a>
+    <a class="author" [routerLink]="['/profile', author.name]">{{author.name}}</a>
     <span class="date">{{publicationDate | date}}</span>
   </div>
 }
