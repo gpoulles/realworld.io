@@ -9,6 +9,7 @@ import { EditorComponent } from './pages/editor/editor.component';
 import { EditorArticleComponent } from './pages/editor/editor-article/editor-article.component';
 import { isAuthorGuard } from './shared/guards/isAuthor.guard';
 import { resetArticleGuard } from './shared/guards/resetArticle.guard';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,6 +30,10 @@ export const routes: Routes = [
     component: EditorArticleComponent,
     canActivate: [authenticationGuard, isAuthorGuard],
     canDeactivate: [resetArticleGuard],
+  },
+  {
+    path: 'profile/:username',
+    component: ProfilePageComponent,
   },
   {
     path: 'settings',
