@@ -1,22 +1,27 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Article, Articles } from '../interfaces/article.interface';
 import { map, Observable } from 'rxjs';
 import { ARTICLES_PER_PAGE } from '../constants/api.constant';
 import {
+  ArticleApiDto,
   ArticleApiResponse,
   ArticlesApiFilters,
   ArticlesApiResponse,
 } from '../interfaces/article-api.interface';
 import { environment } from '../../../environments/environment';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticlesService {
-  constructor(private http: HttpClient) {}
+  currentArticle = signal<Article | null>(null);
 
-  endpoint = environment.endpointDomain + 'articles';
+  constructor(
+    private readonly http: HttpClient,
+    private readonly usersService: UsersService
+  ) {}
 
   getArticles(filters: ArticlesApiFilters): Observable<Articles> {
     let params = new HttpParams().append('limit', ARTICLES_PER_PAGE.toString());
@@ -32,7 +37,7 @@ export class ArticlesService {
     });
 
     return this.http
-      .get<ArticlesApiResponse>(this.endpoint, {
+      .get<ArticlesApiResponse>(this.generateEndpoint(), {
         params,
       })
       .pipe(
@@ -43,11 +48,47 @@ export class ArticlesService {
   }
 
   getArticle(slug: string): Observable<Article> {
-    return this.http.get<ArticleApiResponse>(this.endpoint + '/' + slug).pipe(
+    return this.http.get<ArticleApiResponse>(this.generateEndpoint(slug)).pipe(
       map((response: ArticleApiResponse) => {
-        return this.mapArticleResponse(response.article);
+        const article = this.mapArticleResponse(response.article);
+        this.currentArticle.set(article);
+        return article;
       })
     );
+  }
+
+  createArticle(article: ArticleApiDto): Observable<Article> {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http
+      .post<ArticleApiResponse>(this.generateEndpoint(), article, {
+        headers,
+      })
+      .pipe(
+        map((response: ArticleApiResponse) => {
+          return this.mapArticleResponse(response.article);
+        })
+      );
+  }
+
+  updateArticle(slug: string, article: ArticleApiDto): Observable<Article> {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http
+      .put<ArticleApiResponse>(this.generateEndpoint(slug), article, {
+        headers,
+      })
+      .pipe(
+        map((response: ArticleApiResponse) => {
+          this.currentArticle.set(this.mapArticleResponse(response.article));
+          return this.mapArticleResponse(response.article);
+        })
+      );
+  }
+
+  deleteArticle(slug: string) {
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http.delete<void>(this.generateEndpoint(slug), {
+      headers,
+    });
   }
 
   private mapArticlesResponse(response: ArticlesApiResponse): Articles {
@@ -60,6 +101,7 @@ export class ArticlesService {
   }
 
   private mapArticleResponse(article: ArticleApiResponse): Article {
+    const user = this.usersService.currentUser();
     return {
       slug: article.slug,
       title: article.title,
@@ -71,7 +113,13 @@ export class ArticlesService {
       author: {
         name: article.author.username,
         picture: article.author.image,
+        ownUser: article.author.username === user?.username,
       },
     };
+  }
+
+  private generateEndpoint(slug?: string): string {
+    const appendix = slug ? '/' + slug : '';
+    return environment.endpointDomain + 'articles' + appendix;
   }
 }

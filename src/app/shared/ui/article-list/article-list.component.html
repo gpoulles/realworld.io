@@ -1,3 +1,7 @@
-@for (article of articles; track article.slug){
-  <conduit-article-preview [article]="article"></conduit-article-preview>
+@if(articles.length){
+  @for (article of articles; track article.slug){
+    <conduit-article-preview [article]="article"></conduit-article-preview>
+  }
+}@else{
+  No articles found...
 }

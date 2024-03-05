@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -26,13 +25,13 @@ import {
   templateUrl: './settings-form.component.html',
   styleUrl: './settings-form.component.scss',
 })
-export class SettingsFormComponent implements OnInit, OnChanges {
+export class SettingsFormComponent implements OnChanges {
   @Input() currentUser: User | null = null;
   @Output() submitted: EventEmitter<UserUpdateApiDto> =
     new EventEmitter<UserUpdateApiDto>();
-  settingsForm!: FormGroup;
+  settingsForm: FormGroup;
 
-  ngOnInit() {
+  constructor() {
     this.settingsForm = new FormGroup({
       username: new FormControl<string>(this.currentUser?.username ?? '', [
         Validators.required,
@@ -42,12 +41,8 @@ export class SettingsFormComponent implements OnInit, OnChanges {
         Validators.email,
       ]),
       password: new FormControl<string>(''),
-      image: new FormControl<string>(this.currentUser?.image ?? '', [
-        Validators.required,
-      ]),
-      bio: new FormControl<string>(this.currentUser?.bio ?? '', [
-        Validators.required,
-      ]),
+      image: new FormControl<string>(this.currentUser?.image ?? ''),
+      bio: new FormControl<string>(this.currentUser?.bio ?? ''),
     });
   }
 
