@@ -7,12 +7,16 @@ import {
 } from '../interfaces/profile-api.interface';
 import { environment } from '../../../environments/environment';
 import { map, Observable } from 'rxjs';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly usersService: UsersService
+  ) {}
 
   getProfile(username: string): Observable<Profile> {
     return this.http
@@ -53,16 +57,18 @@ export class ProfileService {
   }
 
   mapProfile(profile: ProfileApi): Profile {
+    const user = this.usersService.currentUser();
     return {
       name: profile.username,
       bio: profile.bio,
       image: profile.image,
       following: profile.following,
+      ownUser: profile.username === user?.username,
     };
   }
 
   private generateEndpoint(username: string, follow: boolean = false) {
     const appendix = follow ? '/follow' : '';
-    return environment.endpointDomain + '/profile/' + username + appendix;
+    return environment.endpointDomain + 'profiles/' + username + appendix;
   }
 }
