@@ -1,5 +1,5 @@
 @if (author){
-  <a [routerLink]="['/profile', author.name]"><img [src]="author.picture" /></a>
+  <a [routerLink]="['/profile', author.name]"><img [src]="author.image" /></a>
   <div class="info">
     <a class="author" [routerLink]="['/profile', author.name]">{{author.name}}</a>
     <span class="date">{{publicationDate | date}}</span>

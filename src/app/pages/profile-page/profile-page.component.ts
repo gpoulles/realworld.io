@@ -3,11 +3,12 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { tap } from 'rxjs';
 import { ProfileService } from '../../shared/services/profile.service';
 import { Profile } from '../../shared/interfaces/profile.interface';
+import { FollowUserComponent } from '../../shared/components/follow-user/follow-user.component';
 
 @Component({
   selector: 'conduit-profile-page',
   standalone: true,
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterLink, RouterOutlet, FollowUserComponent],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })
@@ -32,19 +33,5 @@ export class ProfilePageComponent implements OnInit {
         next: (response) => (this.profile = response),
         error: (error) => console.log(error),
       });
-  }
-
-  followUser() {
-    if (this.profile?.following) {
-      this.profileService.unfollow(this.profile.name).subscribe({
-        next: (response) => (this.profile = response),
-        error: (error) => console.log(error),
-      });
-    } else if (!this.profile?.following && this.profile) {
-      this.profileService.follow(this.profile.name).subscribe({
-        next: (response) => (this.profile = response),
-        error: (error) => console.log(error),
-      });
-    }
   }
 }

@@ -8,6 +8,7 @@ import {
   ArticleApiResponse,
   ArticlesApiFilters,
   ArticlesApiResponse,
+  BasicArticleApiResponse,
 } from '../interfaces/article-api.interface';
 import { environment } from '../../../environments/environment';
 import { UsersService } from './users.service';
@@ -100,7 +101,7 @@ export class ArticlesService {
     };
   }
 
-  private mapArticleResponse(article: ArticleApiResponse): Article {
+  private mapArticleResponse(article: BasicArticleApiResponse): Article {
     const user = this.usersService.currentUser();
     return {
       slug: article.slug,
@@ -112,8 +113,9 @@ export class ArticlesService {
       publishedDate: new Date(article.createdAt),
       author: {
         name: article.author.username,
-        picture: article.author.image,
+        image: article.author.image,
         ownUser: article.author.username === user?.username,
+        following: article.author.following,
       },
     };
   }

@@ -16,6 +16,7 @@ export interface Article {
 
 export interface Author {
   name: string;
-  picture: string;
+  image: string;
   ownUser?: boolean;
+  following?: boolean;
 }

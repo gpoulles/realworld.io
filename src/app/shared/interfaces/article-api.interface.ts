@@ -1,12 +1,12 @@
 export interface ArticlesApiResponse {
-  articles: ArticleApiResponse[];
+  articles: BasicArticleApiResponse[];
   articlesCount: number;
 }
 
 export interface ArticleApiResponse {
-  article: ArticleApiResponse;
+  article: BasicArticleApiResponse;
 }
-export interface ArticleApiResponse {
+export interface BasicArticleApiResponse {
   author: AuthorApiResponse;
   slug: string;
   title: string;
@@ -22,7 +22,7 @@ interface AuthorApiResponse {
   username: string;
   bio: string;
   image: string;
-  following: true;
+  following: boolean;
 }
 export interface ArticlesApiFilters {
   offset: number;
