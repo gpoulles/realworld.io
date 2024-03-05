@@ -10,6 +10,8 @@ import { EditorArticleComponent } from './pages/editor/editor-article/editor-art
 import { isAuthorGuard } from './shared/guards/isAuthor.guard';
 import { resetArticleGuard } from './shared/guards/resetArticle.guard';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { OwnArticlesComponent } from './pages/profile-page/own-articles/own-articles.component';
+import { FavoritedArticlesComponent } from './pages/profile-page/favorited-articles/favorited-articles.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -34,6 +36,10 @@ export const routes: Routes = [
   {
     path: 'profile/:username',
     component: ProfilePageComponent,
+    children: [
+      { path: '', component: OwnArticlesComponent },
+      { path: 'favorites', component: FavoritedArticlesComponent },
+    ],
   },
   {
     path: 'settings',
