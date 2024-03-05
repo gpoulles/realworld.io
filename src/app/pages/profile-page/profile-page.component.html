@@ -11,10 +11,12 @@
           <p>
             {{profile.bio}}
           </p>
-          <button class="btn btn-sm btn-outline-secondary action-btn">
+
+          <button class="btn btn-sm btn-outline-secondary action-btn" (click)="followUser()">
             <i class="ion-plus-round"></i>
-            &nbsp; Follow {{profile.name}}
+            &nbsp; @if(profile.following){Unfollow}@else{Follow} {{profile.name}}
           </button>
+
           @if(profile.ownUser){
           <button class="btn btn-sm btn-outline-secondary action-btn" [routerLink]="['/settings']">
             <i class="ion-gear-a"></i>

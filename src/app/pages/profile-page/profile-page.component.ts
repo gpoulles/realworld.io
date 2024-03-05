@@ -33,4 +33,18 @@ export class ProfilePageComponent implements OnInit {
         error: (error) => console.log(error),
       });
   }
+
+  followUser() {
+    if (this.profile?.following) {
+      this.profileService.unfollow(this.profile.name).subscribe({
+        next: (response) => (this.profile = response),
+        error: (error) => console.log(error),
+      });
+    } else if (!this.profile?.following && this.profile) {
+      this.profileService.follow(this.profile.name).subscribe({
+        next: (response) => (this.profile = response),
+        error: (error) => console.log(error),
+      });
+    }
+  }
 }
