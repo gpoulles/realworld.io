@@ -1,0 +1,6 @@
+@if(profile){
+  <button class="btn btn-sm btn-outline-secondary action-btn" (click)="followUser.emit()">
+    <i class="ion-plus-round"></i>
+    &nbsp; @if(profile.following){Unfollow}@else{Follow} {{profile.name}}
+  </button>
+}

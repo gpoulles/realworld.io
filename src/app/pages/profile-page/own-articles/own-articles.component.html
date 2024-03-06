@@ -1,0 +1,8 @@
+@if (loadingArticles){
+  <div class="mt-2">
+    Loading articles...
+  </div>
+} @else {
+  <conduit-article-list [articles]="articlesResponse.articles"></conduit-article-list>
+  <conduit-pagination [currentPage]="getCurrentPage()" [totalPages]="getTotalPages()" (pageSelected)="switchPage($event)"></conduit-pagination>
+}

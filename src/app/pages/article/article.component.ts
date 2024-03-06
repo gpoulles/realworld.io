@@ -7,6 +7,7 @@ import { FavoritesComponent } from '../../shared/ui/favorites/favorites.componen
 import { EditArticleComponent } from '../../shared/ui/edit-article/edit-article.component';
 import { DeleteArticleComponent } from '../../shared/ui/delete-article/delete-article.component';
 import { ArticleBaseComponent } from '../../shared/components/article-base/article-base.component';
+import { FollowUserComponent } from '../../shared/components/follow-user/follow-user.component';
 
 @Component({
   selector: 'conduit-article',
@@ -18,6 +19,7 @@ import { ArticleBaseComponent } from '../../shared/components/article-base/artic
     RouterLink,
     EditArticleComponent,
     DeleteArticleComponent,
+    FollowUserComponent,
   ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',

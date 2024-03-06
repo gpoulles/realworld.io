@@ -9,6 +9,7 @@
 
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
+          <conduit-follow-user [(profile)]="article.author"></conduit-follow-user>
           <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
           @if(article.author.ownUser){
             <conduit-edit-article (edit)="router.navigate(['editor', article.slug])"></conduit-edit-article>
@@ -34,6 +35,7 @@
       <div class="article-actions">
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
+          <conduit-follow-user [(profile)]="article.author"></conduit-follow-user>
           <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
           @if(article.author.ownUser){
             <conduit-edit-article (edit)="router.navigate(['editor', article.slug])"></conduit-edit-article>
