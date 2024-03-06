@@ -8,6 +8,5 @@ export const ProfileDataResolver: ResolveFn<Profile> = (
   route: ActivatedRouteSnapshot
 ): Observable<Profile> => {
   const username = route.params['username'];
-  console.log('username', username);
   return inject(ProfileService).getProfile(username);
 };
