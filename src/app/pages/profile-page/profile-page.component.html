@@ -1,6 +1,4 @@
-@if(loadingProfile){
-  Loading Profile
-}@else if(profile){
+@if(profile){
 <div class="profile-page">
   <div class="user-info">
     <div class="container">
@@ -12,7 +10,7 @@
             {{profile.bio}}
           </p>
 
-          <conduit-follow-user [profile]="profile"></conduit-follow-user>
+          <conduit-follow-user [(profile)]="profile"></conduit-follow-user>
 
           @if(profile.ownUser){
           <button class="btn btn-sm btn-outline-secondary action-btn" [routerLink]="['/settings']">
@@ -31,10 +29,10 @@
         <div class="articles-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a class="nav-link active">My Articles</a>
+              <a class="nav-link" [class.active]="activeMenuItem === ''" [routerLink]="['/profile', profile.name]">My Articles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Favorited Articles</a>
+              <a class="nav-link" [class.active]="activeMenuItem === 'favorites'" [routerLink]="['/profile', profile.name, 'favorites']">Favorited Articles</a>
             </li>
           </ul>
         </div>

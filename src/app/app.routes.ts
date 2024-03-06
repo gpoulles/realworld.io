@@ -12,6 +12,7 @@ import { resetArticleGuard } from './shared/guards/resetArticle.guard';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { OwnArticlesComponent } from './pages/profile-page/own-articles/own-articles.component';
 import { FavoritedArticlesComponent } from './pages/profile-page/favorited-articles/favorited-articles.component';
+import { ProfileDataResolver } from './shared/resolvers/profile-data.resolver';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -36,6 +37,7 @@ export const routes: Routes = [
   {
     path: 'profile/:username',
     component: ProfilePageComponent,
+    resolve: { profile: ProfileDataResolver },
     children: [
       { path: '', component: OwnArticlesComponent },
       { path: 'favorites', component: FavoritedArticlesComponent },

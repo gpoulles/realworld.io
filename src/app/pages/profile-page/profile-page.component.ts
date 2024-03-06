@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { tap } from 'rxjs';
-import { ProfileService } from '../../shared/services/profile.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
+import { filter, map, Subject, takeUntil } from 'rxjs';
 import { Profile } from '../../shared/interfaces/profile.interface';
 import { FollowUserComponent } from '../../shared/components/follow-user/follow-user.component';
 
@@ -12,26 +17,38 @@ import { FollowUserComponent } from '../../shared/components/follow-user/follow-
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })
-export class ProfilePageComponent implements OnInit {
-  loadingProfile = false;
+export class ProfilePageComponent implements OnInit, OnDestroy {
   profile: Profile | undefined = undefined;
+  activeMenuItem: string = '';
+  destroy$ = new Subject<void>();
 
   constructor(
-    private readonly profileService: ProfileService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
   ngOnInit() {
-    this.profileService
-      .getProfile(this.route.snapshot.params['username'])
+    this.router.events
       .pipe(
-        tap({
-          subscribe: () => (this.loadingProfile = true),
-          finalize: () => (this.loadingProfile = false),
+        takeUntil(this.destroy$),
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.route),
+        map((route) => {
+          while (route.firstChild) route = route.firstChild;
+          return route;
         })
       )
-      .subscribe({
-        next: (response) => (this.profile = response),
-        error: (error) => console.log(error),
+      .subscribe((route) => {
+        const childRoute = route.snapshot;
+        this.activeMenuItem = childRoute.routeConfig?.path ?? '';
       });
+
+    this.route.data.pipe(takeUntil(this.destroy$)).subscribe(({ profile }) => {
+      this.profile = profile;
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

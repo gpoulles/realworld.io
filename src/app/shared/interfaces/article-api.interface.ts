@@ -27,6 +27,7 @@ interface AuthorApiResponse {
 export interface ArticlesApiFilters {
   offset: number;
   tag?: string;
+  author?: string;
 }
 
 export interface ArticleApiDto {
