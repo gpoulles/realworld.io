@@ -18,13 +18,16 @@ export class ArticleBaseComponent implements OnInit {
   constructor(
     protected articlesService: ArticlesService,
     protected route: ActivatedRoute
-  ) {}
+  ) {
+    this.articlesService.currentArticle$.subscribe((article) => {
+      this.article = article;
+    });
+  }
   ngOnInit() {
     this.loadArticle();
   }
 
   private loadArticle(): void {
-    this.article = this.articlesService.currentArticle();
     if (this.article === null) {
       this.articlesService
         .getArticle(this.route.snapshot.params['slug'])

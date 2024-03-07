@@ -3,11 +3,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArticlesService } from '../../shared/services/articles.service';
 import { MetaDataSnippetComponent } from '../../shared/ui/meta-data-snippet/meta-data-snippet.component';
 import { TagsComponent } from '../../shared/ui/tags/tags.component';
-import { FavoritesComponent } from '../../shared/ui/favorites/favorites.component';
+import { FavoriteButtonComponent } from '../../shared/ui/favorite-button/favorite-button.component';
 import { EditArticleComponent } from '../../shared/ui/edit-article/edit-article.component';
 import { DeleteArticleComponent } from '../../shared/ui/delete-article/delete-article.component';
 import { ArticleBaseComponent } from '../../shared/components/article-base/article-base.component';
 import { FollowUserComponent } from '../../shared/components/follow-user/follow-user.component';
+import { FavoriteArticleComponent } from '../../shared/components/favorite-article/favorite-article.component';
 
 @Component({
   selector: 'conduit-article',
@@ -15,11 +16,12 @@ import { FollowUserComponent } from '../../shared/components/follow-user/follow-
   imports: [
     MetaDataSnippetComponent,
     TagsComponent,
-    FavoritesComponent,
+    FavoriteButtonComponent,
     RouterLink,
     EditArticleComponent,
     DeleteArticleComponent,
     FollowUserComponent,
+    FavoriteArticleComponent,
   ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',

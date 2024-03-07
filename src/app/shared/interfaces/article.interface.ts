@@ -11,6 +11,7 @@ export interface Article {
   title: string;
   excerpt: string;
   favorites: number;
+  favorited: boolean;
   tags: string[];
 }
 

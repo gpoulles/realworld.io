@@ -20,7 +20,7 @@ export const resetArticleGuard: CanDeactivateFn<CanComponentDeactivate> = (
     !nextState.url.startsWith('/article/') &&
     !nextState.url.startsWith('/editor/')
   ) {
-    inject(ArticlesService).currentArticle.set(null);
+    inject(ArticlesService).currentArticle$.next(null);
   }
   return component.canDeactivate ? component.canDeactivate() : true;
 };

@@ -1,32 +1,31 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Article, Articles } from '../interfaces/article.interface';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { ARTICLES_PER_PAGE } from '../constants/api.constant';
 import {
   ArticleApiDto,
   ArticleApiResponse,
   ArticlesApiFilters,
   ArticlesApiResponse,
-  BasicArticleApiResponse,
 } from '../interfaces/article-api.interface';
 import { environment } from '../../../environments/environment';
-import { UsersService } from './users.service';
+import { ArticleMapperService } from './article-mapper.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticlesService {
-  currentArticle = signal<Article | null>(null);
+  currentArticle$ = new Subject<Article | null>();
 
   constructor(
     private readonly http: HttpClient,
-    private readonly usersService: UsersService
+    private readonly articleMapperService: ArticleMapperService
   ) {}
 
   getArticles(filters: ArticlesApiFilters): Observable<Articles> {
     let params = new HttpParams().append('limit', ARTICLES_PER_PAGE.toString());
-
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
     Object.keys(filters).forEach((key: string) => {
       const propertyKey = key as keyof ArticlesApiFilters;
       if (filters[propertyKey] !== null && filters[propertyKey] !== undefined) {
@@ -40,6 +39,7 @@ export class ArticlesService {
     return this.http
       .get<ArticlesApiResponse>(this.generateEndpoint(), {
         params,
+        headers,
       })
       .pipe(
         map((response: ArticlesApiResponse) =>
@@ -49,13 +49,18 @@ export class ArticlesService {
   }
 
   getArticle(slug: string): Observable<Article> {
-    return this.http.get<ArticleApiResponse>(this.generateEndpoint(slug)).pipe(
-      map((response: ArticleApiResponse) => {
-        const article = this.mapArticleResponse(response.article);
-        this.currentArticle.set(article);
-        return article;
-      })
-    );
+    const headers = new HttpHeaders().set('addAuthToken', 'true');
+    return this.http
+      .get<ArticleApiResponse>(this.generateEndpoint(slug), { headers })
+      .pipe(
+        map((response: ArticleApiResponse) => {
+          const article = this.articleMapperService.mapArticleResponse(
+            response.article
+          );
+          this.currentArticle$.next(article);
+          return article;
+        })
+      );
   }
 
   createArticle(article: ArticleApiDto): Observable<Article> {
@@ -66,7 +71,7 @@ export class ArticlesService {
       })
       .pipe(
         map((response: ArticleApiResponse) => {
-          return this.mapArticleResponse(response.article);
+          return this.articleMapperService.mapArticleResponse(response.article);
         })
       );
   }
@@ -79,8 +84,10 @@ export class ArticlesService {
       })
       .pipe(
         map((response: ArticleApiResponse) => {
-          this.currentArticle.set(this.mapArticleResponse(response.article));
-          return this.mapArticleResponse(response.article);
+          this.currentArticle$.next(
+            this.articleMapperService.mapArticleResponse(response.article)
+          );
+          return this.articleMapperService.mapArticleResponse(response.article);
         })
       );
   }
@@ -95,28 +102,9 @@ export class ArticlesService {
   private mapArticlesResponse(response: ArticlesApiResponse): Articles {
     return {
       articles: response.articles.map((article) =>
-        this.mapArticleResponse(article)
+        this.articleMapperService.mapArticleResponse(article)
       ),
       articlesCount: response.articlesCount,
-    };
-  }
-
-  private mapArticleResponse(article: BasicArticleApiResponse): Article {
-    const user = this.usersService.currentUser();
-    return {
-      slug: article.slug,
-      title: article.title,
-      body: article.body,
-      excerpt: article.description,
-      tags: article.tagList,
-      favorites: article.favoritesCount,
-      publishedDate: new Date(article.createdAt),
-      author: {
-        name: article.author.username,
-        image: article.author.image,
-        ownUser: article.author.username === user?.username,
-        following: article.author.following,
-      },
     };
   }
 

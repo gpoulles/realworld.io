@@ -1,0 +1,8 @@
+<button class="btn btn-sm" [class.btn-outline-primary]="!isFavorited"  [class.btn-primary]="isFavorited"[class.pull-xs-right]="!extended" (click)="favorited.emit()">
+  <i class="ion-heart"></i>
+  @if(extended) {
+    @if(isFavorited){ Unfavorite }@else{ Favorite } Post <span class="counter">({{favorites}})</span>
+  } @else{
+     {{favorites}}
+  }
+</button>

@@ -2,7 +2,6 @@
   @if(loadingArticle){
     Loading article...
   } @else if (article){
-
     <div class="banner">
       <div class="container">
         <h1>{{article.title}}</h1>
@@ -10,7 +9,7 @@
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
           <conduit-follow-user [(profile)]="article.author"></conduit-follow-user>
-          <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
+          <conduit-favorite-article [article]="article" [extended]="true"></conduit-favorite-article>
           @if(article.author.ownUser){
             <conduit-edit-article (edit)="router.navigate(['editor', article.slug])"></conduit-edit-article>
             <conduit-delete-article (delete)="deleteArticle()" ></conduit-delete-article>
@@ -36,7 +35,7 @@
         <div class="article-meta">
           <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
           <conduit-follow-user [(profile)]="article.author"></conduit-follow-user>
-          <conduit-favorites [favorites]="article.favorites" [extended]="true"></conduit-favorites>
+          <conduit-favorite-article [article]="article" [extended]="true"></conduit-favorite-article>
           @if(article.author.ownUser){
             <conduit-edit-article (edit)="router.navigate(['editor', article.slug])"></conduit-edit-article>
             <conduit-delete-article (delete)="deleteArticle()"></conduit-delete-article>
