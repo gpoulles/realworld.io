@@ -28,6 +28,7 @@ export interface ArticlesApiFilters {
   offset: number;
   tag?: string;
   author?: string;
+  favorited?: string;
 }
 
 export interface ArticleApiDto {

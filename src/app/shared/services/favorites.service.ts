@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ArticleApiResponse } from '../interfaces/article-api.interface';
 import { Article } from '../interfaces/article.interface';
-import { ArticlesService } from './articles.service';
 import { ArticleMapperService } from './article-mapper.service';
 import { environment } from '../../../environments/environment';
 
@@ -13,7 +12,6 @@ import { environment } from '../../../environments/environment';
 export class FavoritesService {
   constructor(
     private readonly http: HttpClient,
-    private readonly articlesService: ArticlesService,
     private readonly articleMapperService: ArticleMapperService
   ) {}
 
@@ -23,11 +21,7 @@ export class FavoritesService {
       .post<ArticleApiResponse>(this.generateEndpoint(slug), {}, { headers })
       .pipe(
         map((response: ArticleApiResponse) => {
-          const article = this.articleMapperService.mapArticleResponse(
-            response.article
-          );
-          this.articlesService.currentArticle$.next(article);
-          return article;
+          return this.articleMapperService.mapArticleResponse(response.article);
         })
       );
   }
@@ -40,11 +34,7 @@ export class FavoritesService {
       })
       .pipe(
         map((response: ArticleApiResponse) => {
-          const article = this.articleMapperService.mapArticleResponse(
-            response.article
-          );
-          this.articlesService.currentArticle$.next(article);
-          return article;
+          return this.articleMapperService.mapArticleResponse(response.article);
         })
       );
   }

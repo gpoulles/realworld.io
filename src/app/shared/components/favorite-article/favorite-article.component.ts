@@ -1,8 +1,15 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { FavoriteButtonComponent } from '../../ui/favorite-button/favorite-button.component';
 import { Article } from '../../interfaces/article.interface';
 import { FavoritesService } from '../../services/favorites.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ArticlesService } from '../../services/articles.service';
 
 @Component({
   selector: 'conduit-favorite-article',
@@ -13,11 +20,15 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class FavoriteArticleComponent implements OnDestroy {
   @Input() article: Article | null = null;
-  @Input() extended = false;
+  @Output() articleChange: EventEmitter<Article> = new EventEmitter<Article>();
+  @Input() onArticle = false;
 
   destroy$ = new Subject<void>();
 
-  constructor(private readonly favoritesService: FavoritesService) {}
+  constructor(
+    private readonly favoritesService: FavoritesService,
+    private readonly articlesService: ArticlesService
+  ) {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -28,13 +39,27 @@ export class FavoriteArticleComponent implements OnDestroy {
       this.favoritesService
         .unfavoriteArticle(this.article.slug)
         .pipe(takeUntil(this.destroy$))
-        .subscribe();
+        .subscribe({
+          next: (response) => {
+            this.articleChange.emit(response);
+            if (this.onArticle)
+              this.articlesService.currentArticle$.next(response);
+          },
+          error: (error) => console.log('error'),
+        });
     } else {
       if (this.article?.slug) {
         this.favoritesService
           .favoriteArticle(this.article.slug)
           .pipe(takeUntil(this.destroy$))
-          .subscribe();
+          .subscribe({
+            next: (response) => {
+              this.articleChange.emit(response);
+              if (this.onArticle)
+                this.articlesService.currentArticle$.next(response);
+            },
+            error: (error) => console.log('error'),
+          });
       }
     }
   }

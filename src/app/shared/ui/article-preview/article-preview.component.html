@@ -2,7 +2,7 @@
   <div class="article-preview">
     <div class="article-meta">
       <conduit-meta-data-snippet [author]="article.author" [publicationDate]="article.publishedDate"></conduit-meta-data-snippet>
-      <conduit-favorite-article [article]="article"></conduit-favorite-article>
+      <conduit-favorite-article [(article)]="article"></conduit-favorite-article>
     </div>
     <a [routerLink]="['/article', article.slug]" class="preview-link">
       <h1>{{article.title}}</h1>
