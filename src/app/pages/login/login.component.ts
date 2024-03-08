@@ -5,7 +5,7 @@ import { UserLoginApiDto } from '../../shared/interfaces/users-api.interface';
 import { Router, RouterLink } from '@angular/router';
 import { ErrorResponse } from '../../shared/interfaces/error.interface';
 import { ErrorMessagesComponent } from '../../shared/ui/error-messages/error-messages.component';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'conduit-login',
@@ -30,7 +30,10 @@ export class LoginComponent implements OnDestroy {
   login(loginFormValue: UserLoginApiDto) {
     this.usersService
       .loginUser(loginFormValue)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({ subscribe: () => (this.errorMessages = []) })
+      )
       .subscribe({
         next: () => this.router.navigate(['/']),
         error: (error: ErrorResponse) => {

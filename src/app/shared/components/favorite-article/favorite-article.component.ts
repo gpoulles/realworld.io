@@ -10,6 +10,7 @@ import { Article } from '../../interfaces/article.interface';
 import { FavoritesService } from '../../services/favorites.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ArticlesService } from '../../services/articles.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'conduit-favorite-article',
@@ -27,7 +28,8 @@ export class FavoriteArticleComponent implements OnDestroy {
 
   constructor(
     private readonly favoritesService: FavoritesService,
-    private readonly articlesService: ArticlesService
+    private readonly articlesService: ArticlesService,
+    private readonly usersService: UsersService
   ) {}
 
   ngOnDestroy() {
@@ -35,22 +37,10 @@ export class FavoriteArticleComponent implements OnDestroy {
     this.destroy$.complete();
   }
   favorited() {
-    if (this.article?.favorited) {
-      this.favoritesService
-        .unfavoriteArticle(this.article.slug)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (response) => {
-            this.articleChange.emit(response);
-            if (this.onArticle)
-              this.articlesService.currentArticle$.next(response);
-          },
-          error: (error) => console.error(error),
-        });
-    } else {
-      if (this.article?.slug) {
+    if (this.usersService.currentUser()) {
+      if (this.article?.favorited) {
         this.favoritesService
-          .favoriteArticle(this.article.slug)
+          .unfavoriteArticle(this.article.slug)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (response) => {
@@ -60,6 +50,20 @@ export class FavoriteArticleComponent implements OnDestroy {
             },
             error: (error) => console.error(error),
           });
+      } else {
+        if (this.article?.slug) {
+          this.favoritesService
+            .favoriteArticle(this.article.slug)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (response) => {
+                this.articleChange.emit(response);
+                if (this.onArticle)
+                  this.articlesService.currentArticle$.next(response);
+              },
+              error: (error) => console.error(error),
+            });
+        }
       }
     }
   }

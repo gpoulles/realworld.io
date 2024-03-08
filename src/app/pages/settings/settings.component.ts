@@ -5,7 +5,7 @@ import { UserUpdateApiDto } from '../../shared/interfaces/users-api.interface';
 import { ErrorResponse } from '../../shared/interfaces/error.interface';
 import { LoginFormComponent } from '../login/login-form/login-form.component';
 import { ErrorMessagesComponent } from '../../shared/ui/error-messages/error-messages.component';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'conduit-settings',
@@ -27,7 +27,10 @@ export class SettingsComponent implements OnDestroy {
   saveChanges(payload: UserUpdateApiDto) {
     this.usersService
       .updateCurrentUser(payload)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({ subscribe: () => (this.errorMessages = []) })
+      )
       .subscribe({
         next: () => {},
         error: (error: ErrorResponse) => {

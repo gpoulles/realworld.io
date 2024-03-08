@@ -13,6 +13,10 @@ export function AuthenticationInterceptor(
         .set('Authorization', `Token ${authToken}`)
         .delete('addAuthToken'),
     });
+  } else if (req.headers.has('addAuthToken')) {
+    req = req.clone({
+      headers: req.headers.delete('addAuthToken'),
+    });
   }
 
   return next(req);

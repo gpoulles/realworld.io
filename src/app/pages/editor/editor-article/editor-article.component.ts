@@ -4,7 +4,7 @@ import { ArticleApiDto } from '../../../shared/interfaces/article-api.interface'
 import { ArticlesService } from '../../../shared/services/articles.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleBaseComponent } from '../../../shared/components/article-base/article-base.component';
-import { takeUntil } from 'rxjs';
+import { takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'conduit-editor-article',
@@ -28,7 +28,10 @@ export class EditorArticleComponent extends ArticleBaseComponent {
     if (this.article)
       this.articlesService
         .updateArticle(this.article.slug, payload)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(
+          takeUntil(this.destroy$),
+          tap({ subscribe: () => (this.errorMessages = []) })
+        )
         .subscribe({
           next: (article) => {
             this.router.navigate(['/article', article.slug]);

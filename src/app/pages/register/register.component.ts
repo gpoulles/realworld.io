@@ -6,7 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ErrorResponse } from '../../shared/interfaces/error.interface';
 import { LoginFormComponent } from '../login/login-form/login-form.component';
 import { ErrorMessagesComponent } from '../../shared/ui/error-messages/error-messages.component';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'conduit-register',
@@ -36,7 +36,10 @@ export class RegisterComponent implements OnDestroy {
   register(registerFormValue: UserRegisterApiDto) {
     this.usersService
       .registerUser(registerFormValue)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({ subscribe: () => (this.errorMessages = []) })
+      )
       .subscribe({
         next: () => this.router.navigate(['/']),
         error: (error: ErrorResponse) => {

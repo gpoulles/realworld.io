@@ -4,7 +4,7 @@ import { ErrorMessagesComponent } from '../../shared/ui/error-messages/error-mes
 import { ArticleApiDto } from '../../shared/interfaces/article-api.interface';
 import { ArticlesService } from '../../shared/services/articles.service';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'conduit-editor',
@@ -30,7 +30,10 @@ export class EditorComponent implements OnDestroy {
   saveChanges(payload: ArticleApiDto) {
     this.articlesService
       .createArticle(payload)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({ subscribe: () => (this.errorMessages = []) })
+      )
       .subscribe({
         next: (article) => {
           this.router.navigate(['/article', article.slug]);
