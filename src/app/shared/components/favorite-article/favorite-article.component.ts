@@ -20,7 +20,7 @@ import { UsersService } from '../../services/users.service';
   styleUrl: './favorite-article.component.scss',
 })
 export class FavoriteArticleComponent implements OnDestroy {
-  @Input() article: Article | null = null;
+  @Input({ required: true }) article: Article | undefined;
   @Output() articleChange: EventEmitter<Article> = new EventEmitter<Article>();
   @Input() onArticle = false;
 

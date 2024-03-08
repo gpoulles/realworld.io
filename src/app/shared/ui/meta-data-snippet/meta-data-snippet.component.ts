@@ -11,6 +11,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './meta-data-snippet.component.scss',
 })
 export class MetaDataSnippetComponent {
-  @Input() author: Author | undefined = undefined;
+  @Input({ required: true }) author: Author | undefined;
   @Input() publicationDate: Date = new Date();
 }

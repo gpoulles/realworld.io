@@ -20,7 +20,7 @@ import { UsersService } from '../../services/users.service';
   styleUrl: './follow-user.component.scss',
 })
 export class FollowUserComponent implements OnDestroy {
-  @Input() profile: Profile | Author | undefined = undefined;
+  @Input({ required: true }) profile: Profile | Author | undefined;
   @Output() profileChange = new EventEmitter<Profile | Author>();
   private destroy$ = new Subject<void>();
   constructor(

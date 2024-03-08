@@ -10,6 +10,6 @@ import { Author } from '../../interfaces/article.interface';
   styleUrl: './follow-user-button.component.scss',
 })
 export class FollowUserButtonComponent {
-  @Input() profile: Profile | Author | undefined = undefined;
+  @Input({ required: true }) profile: Profile | Author | undefined;
   @Output() followUser: EventEmitter<void> = new EventEmitter<void>();
 }
