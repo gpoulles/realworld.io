@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ArticleListComponent } from '../../../shared/ui/article-list/article-list.component';
 import { PaginationComponent } from '../../../shared/ui/pagination/pagination.component';
 import { ArticlesBaseComponent } from '../../../shared/components/articles-base/articles-base.component';
 import { ArticlesService } from '../../../shared/services/articles.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'conduit-favorited-articles',
@@ -13,11 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './favorited-articles.component.html',
   styleUrl: './favorited-articles.component.scss',
 })
-export class FavoritedArticlesComponent
-  extends ArticlesBaseComponent
-  implements OnDestroy
-{
-  destroy$ = new Subject<void>();
+export class FavoritedArticlesComponent extends ArticlesBaseComponent {
   constructor(
     protected override articlesService: ArticlesService,
     private readonly route: ActivatedRoute
@@ -29,10 +25,5 @@ export class FavoritedArticlesComponent
         this.filters = { ...this.filters, favorited: profile.name };
         this.loadArticles(this.filters);
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

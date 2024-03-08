@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ArticlesService } from '../../services/articles.service';
 import { ArticlesApiFilters } from '../../interfaces/article-api.interface';
-import { tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Articles } from '../../interfaces/article.interface';
 import { ARTICLES_PER_PAGE } from '../../constants/api.constant';
 
@@ -12,17 +12,24 @@ import { ARTICLES_PER_PAGE } from '../../constants/api.constant';
   templateUrl: './articles-base.component.html',
   styleUrl: './articles-base.component.scss',
 })
-export class ArticlesBaseComponent {
+export class ArticlesBaseComponent implements OnDestroy {
   loadingArticles = false;
   filters: ArticlesApiFilters = { offset: 0 };
   articlesResponse: Articles = { articles: [], articlesCount: 0 };
+  destroy$ = new Subject<void>();
   constructor(protected articlesService: ArticlesService) {}
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   loadArticles(filters: ArticlesApiFilters) {
     this.filters = filters;
     this.articlesService
       .getArticles(filters)
       .pipe(
+        takeUntil(this.destroy$),
         tap({
           subscribe: () => (this.loadingArticles = true),
           finalize: () => (this.loadingArticles = false),
@@ -32,7 +39,7 @@ export class ArticlesBaseComponent {
         next: (response) => {
           this.articlesResponse = response;
         },
-        error: (error) => console.log(error),
+        error: (error) => console.error(error),
       });
   }
 

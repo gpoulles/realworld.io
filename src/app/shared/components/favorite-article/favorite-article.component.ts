@@ -23,7 +23,7 @@ export class FavoriteArticleComponent implements OnDestroy {
   @Output() articleChange: EventEmitter<Article> = new EventEmitter<Article>();
   @Input() onArticle = false;
 
-  destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly favoritesService: FavoritesService,
@@ -45,7 +45,7 @@ export class FavoriteArticleComponent implements OnDestroy {
             if (this.onArticle)
               this.articlesService.currentArticle$.next(response);
           },
-          error: (error) => console.log('error'),
+          error: (error) => console.error(error),
         });
     } else {
       if (this.article?.slug) {
@@ -58,7 +58,7 @@ export class FavoriteArticleComponent implements OnDestroy {
               if (this.onArticle)
                 this.articlesService.currentArticle$.next(response);
             },
-            error: (error) => console.log('error'),
+            error: (error) => console.error(error),
           });
       }
     }

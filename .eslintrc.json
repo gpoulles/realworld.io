@@ -4,6 +4,13 @@
   "overrides": [
     {
       "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2019,
+        "project": "tsconfig.json",
+        "sourceType": "module"
+      },
+      "plugins": ["rxjs-angular"],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -27,7 +34,17 @@
             "prefix": "conduit",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "rxjs-angular/prefer-takeuntil": [
+          "error",
+          {
+            "alias": ["untilDestroyed"],
+            "checkComplete": true,
+            "checkDecorators": ["Component"],
+            "checkDestroy": false
+          }
+        ],
+        "no-console": ["error", { "allow": ["error"] }]
       }
     },
     {
