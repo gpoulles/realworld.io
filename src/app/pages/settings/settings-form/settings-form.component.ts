@@ -13,10 +13,8 @@ import {
   Validators,
 } from '@angular/forms';
 
-import {
-  User,
-  UserUpdateApiDto,
-} from '../../../shared/interfaces/users-api.interface';
+import { UserUpdateApiDto } from '../../../shared/interfaces/users-api.interface';
+import { User } from '../../../shared/interfaces/users.interface';
 
 @Component({
   selector: 'conduit-settings-form',
