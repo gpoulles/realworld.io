@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class TagsService {
-  endpoint = environment.endpointDomain + 'tags';
+  private endpoint = environment.endpointDomain + 'tags';
   constructor(private http: HttpClient) {}
 
   getTags(): Observable<string[]> {
