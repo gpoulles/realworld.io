@@ -10,6 +10,7 @@ import { ArticleBaseComponent } from '../../shared/components/article-base/artic
 import { FollowUserComponent } from '../../shared/components/follow-user/follow-user.component';
 import { FavoriteArticleComponent } from '../../shared/components/favorite-article/favorite-article.component';
 import { takeUntil } from 'rxjs';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'conduit-article',
@@ -23,6 +24,7 @@ import { takeUntil } from 'rxjs';
     DeleteArticleComponent,
     FollowUserComponent,
     FavoriteArticleComponent,
+    MarkdownComponent,
   ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',
