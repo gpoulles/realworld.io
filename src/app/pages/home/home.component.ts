@@ -69,7 +69,7 @@ export class HomeComponent extends ArticlesBaseComponent implements OnInit {
     }
   }
 
-  private loadTags() {
+  loadTags() {
     this.tagsService
       .getTags()
       .pipe(

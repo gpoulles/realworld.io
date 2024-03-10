@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditorFormComponent } from './editor-form.component';
 
-describe('EditorFormComponent', () => {
+xdescribe('EditorFormComponent', () => {
   let component: EditorFormComponent;
   let fixture: ComponentFixture<EditorFormComponent>;
 

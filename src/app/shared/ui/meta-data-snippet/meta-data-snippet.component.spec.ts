@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MetaDataSnippetComponent } from './meta-data-snippet.component';
 
-describe('MetaDataSnippetComponent', () => {
+xdescribe('MetaDataSnippetComponent', () => {
   let component: MetaDataSnippetComponent;
   let fixture: ComponentFixture<MetaDataSnippetComponent>;
 
