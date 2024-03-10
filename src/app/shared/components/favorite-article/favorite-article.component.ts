@@ -10,6 +10,7 @@ import { Article } from '../../interfaces/article.interface';
 import { FavoritesService } from '../../services/favorites.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ArticlesService } from '../../services/articles.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'conduit-favorite-article',
@@ -19,15 +20,16 @@ import { ArticlesService } from '../../services/articles.service';
   styleUrl: './favorite-article.component.scss',
 })
 export class FavoriteArticleComponent implements OnDestroy {
-  @Input() article: Article | null = null;
+  @Input({ required: true }) article: Article | undefined;
   @Output() articleChange: EventEmitter<Article> = new EventEmitter<Article>();
   @Input() onArticle = false;
 
-  destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly favoritesService: FavoritesService,
-    private readonly articlesService: ArticlesService
+    private readonly articlesService: ArticlesService,
+    private readonly usersService: UsersService
   ) {}
 
   ngOnDestroy() {
@@ -35,22 +37,10 @@ export class FavoriteArticleComponent implements OnDestroy {
     this.destroy$.complete();
   }
   favorited() {
-    if (this.article?.favorited) {
-      this.favoritesService
-        .unfavoriteArticle(this.article.slug)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (response) => {
-            this.articleChange.emit(response);
-            if (this.onArticle)
-              this.articlesService.currentArticle$.next(response);
-          },
-          error: (error) => console.log('error'),
-        });
-    } else {
-      if (this.article?.slug) {
+    if (this.usersService.currentUser()) {
+      if (this.article?.favorited) {
         this.favoritesService
-          .favoriteArticle(this.article.slug)
+          .unfavoriteArticle(this.article.slug)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (response) => {
@@ -58,8 +48,22 @@ export class FavoriteArticleComponent implements OnDestroy {
               if (this.onArticle)
                 this.articlesService.currentArticle$.next(response);
             },
-            error: (error) => console.log('error'),
+            error: (error) => console.error(error),
           });
+      } else {
+        if (this.article?.slug) {
+          this.favoritesService
+            .favoriteArticle(this.article.slug)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (response) => {
+                this.articleChange.emit(response);
+                if (this.onArticle)
+                  this.articlesService.currentArticle$.next(response);
+              },
+              error: (error) => console.error(error),
+            });
+        }
       }
     }
   }

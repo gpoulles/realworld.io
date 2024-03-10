@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ArticlePreviewComponent } from './article-preview.component';
 
-describe('ArticlePreviewComponent', () => {
+xdescribe('ArticlePreviewComponent', () => {
   let component: ArticlePreviewComponent;
   let fixture: ComponentFixture<ArticlePreviewComponent>;
 

@@ -17,7 +17,7 @@ import { filter, map, Subject, takeUntil } from 'rxjs';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   currentRoute: string = '';
   constructor(
     public usersService: UsersService,
@@ -44,13 +44,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.currentRoute = firstSegment;
         },
         error: (error) => {
-          console.log(error);
+          console.error(error);
         },
       });
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

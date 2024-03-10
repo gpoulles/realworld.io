@@ -9,6 +9,8 @@ import { DeleteArticleComponent } from '../../shared/ui/delete-article/delete-ar
 import { ArticleBaseComponent } from '../../shared/components/article-base/article-base.component';
 import { FollowUserComponent } from '../../shared/components/follow-user/follow-user.component';
 import { FavoriteArticleComponent } from '../../shared/components/favorite-article/favorite-article.component';
+import { takeUntil } from 'rxjs';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'conduit-article',
@@ -22,6 +24,7 @@ import { FavoriteArticleComponent } from '../../shared/components/favorite-artic
     DeleteArticleComponent,
     FollowUserComponent,
     FavoriteArticleComponent,
+    MarkdownComponent,
   ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',
@@ -37,9 +40,12 @@ export class ArticleComponent extends ArticleBaseComponent {
 
   deleteArticle() {
     if (this.article)
-      this.articlesService.deleteArticle(this.article?.slug).subscribe({
-        next: () => this.router.navigate(['/']),
-        error: (error) => console.log(error),
-      });
+      this.articlesService
+        .deleteArticle(this.article?.slug)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => this.router.navigate(['/']),
+          error: (error) => console.error(error),
+        });
   }
 }

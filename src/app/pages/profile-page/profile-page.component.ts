@@ -20,7 +20,7 @@ import { FollowUserComponent } from '../../shared/components/follow-user/follow-
 export class ProfilePageComponent implements OnInit, OnDestroy {
   profile: Profile | undefined = undefined;
   activeMenuItem: string = '';
-  destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly route: ActivatedRoute,

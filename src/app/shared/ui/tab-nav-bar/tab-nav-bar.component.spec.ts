@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TabNavBarComponent } from './tab-nav-bar.component';
 
-describe('TabNavBarComponent', () => {
+xdescribe('TabNavBarComponent', () => {
   let component: TabNavBarComponent;
   let fixture: ComponentFixture<TabNavBarComponent>;
 

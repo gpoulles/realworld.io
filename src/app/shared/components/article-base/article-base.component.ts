@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { ArticlesService } from '../../services/articles.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../../interfaces/article.interface';
@@ -11,7 +11,8 @@ import { Article } from '../../interfaces/article.interface';
   templateUrl: './article-base.component.html',
   styleUrl: './article-base.component.scss',
 })
-export class ArticleBaseComponent implements OnInit {
+export class ArticleBaseComponent implements OnInit, OnDestroy {
+  destroy$ = new Subject<void>();
   article: Article | null = null;
   loadingArticle = false;
 
@@ -19,12 +20,19 @@ export class ArticleBaseComponent implements OnInit {
     protected articlesService: ArticlesService,
     protected route: ActivatedRoute
   ) {
-    this.articlesService.currentArticle$.subscribe((article) => {
-      this.article = article;
-    });
+    this.articlesService.currentArticle$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((article) => {
+        this.article = article;
+      });
   }
   ngOnInit() {
     this.loadArticle();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private loadArticle(): void {
@@ -32,6 +40,7 @@ export class ArticleBaseComponent implements OnInit {
       this.articlesService
         .getArticle(this.route.snapshot.params['slug'])
         .pipe(
+          takeUntil(this.destroy$),
           tap({
             subscribe: () => (this.loadingArticle = true),
             finalize: () => (this.loadingArticle = false),
@@ -39,7 +48,7 @@ export class ArticleBaseComponent implements OnInit {
         )
         .subscribe({
           next: (response) => (this.article = response),
-          error: (error) => console.log(error),
+          error: (error) => console.error(error),
         });
     }
   }

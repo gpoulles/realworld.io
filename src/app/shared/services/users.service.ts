@@ -5,12 +5,13 @@ import { map, Observable } from 'rxjs';
 
 import {
   UserLoginApiDto,
-  User,
   UserApiResponse,
   UserRegisterApiDto,
   UserUpdateApiDto,
+  UserApi,
 } from '../interfaces/users-api.interface';
 import { Router } from '@angular/router';
+import { User } from '../interfaces/users.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -62,9 +63,10 @@ export class UsersService {
     return this.http
       .put<UserApiResponse>(this.userEndpoint, payload, { headers })
       .pipe(
+        map((response) => this.mapUser(response.user)),
         map((response) => {
-          this.currentUser.set(response.user);
-          return response.user;
+          this.currentUser.set(response);
+          return response;
         })
       );
   }
@@ -73,5 +75,15 @@ export class UsersService {
     localStorage.removeItem('token');
     this.currentUser.set(null);
     this.router.navigate(['/']);
+  }
+
+  mapUser(userApi: UserApi): User {
+    return {
+      username: userApi.username,
+      token: userApi.token,
+      email: userApi.email,
+      image: userApi.image,
+      bio: userApi.bio,
+    };
   }
 }

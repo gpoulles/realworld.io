@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ArticlesService } from '../../../shared/services/articles.service';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleListComponent } from '../../../shared/ui/article-list/article-list.component';
 import { PaginationComponent } from '../../../shared/ui/pagination/pagination.component';
@@ -14,10 +14,8 @@ import { ArticlesBaseComponent } from '../../../shared/components/articles-base/
 })
 export class OwnArticlesComponent
   extends ArticlesBaseComponent
-  implements OnInit, OnDestroy
+  implements OnInit
 {
-  destroy$ = new Subject<void>();
-
   constructor(
     protected override articlesService: ArticlesService,
     private readonly route: ActivatedRoute
@@ -29,10 +27,5 @@ export class OwnArticlesComponent
       this.filters = { ...this.filters, author: profile.name };
       this.loadArticles(this.filters);
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

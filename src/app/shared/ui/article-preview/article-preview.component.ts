@@ -20,5 +20,5 @@ import { FavoriteArticleComponent } from '../../components/favorite-article/favo
   styleUrl: './article-preview.component.scss',
 })
 export class ArticlePreviewComponent {
-  @Input() article: Article | undefined = undefined;
+  @Input({ required: true }) article: Article | undefined;
 }

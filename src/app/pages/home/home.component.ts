@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ArticlesService } from '../../shared/services/articles.service';
 import { ArticlePreviewComponent } from '../../shared/ui/article-preview/article-preview.component';
 import { PaginationComponent } from '../../shared/ui/pagination/pagination.component';
-import { tap } from 'rxjs';
+import { takeUntil, tap } from 'rxjs';
 import { ArticleListComponent } from '../../shared/ui/article-list/article-list.component';
 import { PopularTagsComponent } from './popular-tags/popular-tags.component';
 import { TagsService } from '../../shared/services/tags.service';
@@ -69,10 +69,11 @@ export class HomeComponent extends ArticlesBaseComponent implements OnInit {
     }
   }
 
-  private loadTags() {
+  loadTags() {
     this.tagsService
       .getTags()
       .pipe(
+        takeUntil(this.destroy$),
         tap({
           subscribe: () => (this.loadingTags = true),
           finalize: () => (this.loadingTags = false),
@@ -82,7 +83,7 @@ export class HomeComponent extends ArticlesBaseComponent implements OnInit {
         next: (response) => {
           this.tagsResponse = response;
         },
-        error: (error) => console.log(error),
+        error: (error) => console.error(error),
       });
   }
 
